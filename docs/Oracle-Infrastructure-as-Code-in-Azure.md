@@ -1,3 +1,7 @@
+layout: page
+title: "Oracle Infrastructure as Code on Azure"
+permalink: /URL-PATH/
+
 # Oracle Infrastructure as Code in Azure
 ![Architecture Diagram](../images/oraclePostImage.jpeg)
 
