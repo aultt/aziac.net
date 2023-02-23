@@ -57,7 +57,7 @@ Your code needs to be associated with a repository to leverage DevOps, you can l
 ## Continuous Integration Pipeline
 After selecting the repo select existing Azure Pipelines YAML File and select azure-pipelines.yml. You will be presented with the following view:
 
-![image5](assets/images/DevOpsPart1Image5.png)
+![image5](assets/images/DevOpsPart1image5.png)
 
 Notice there are items which will need to be update below the red arrow. To update these, click the Settings where the error is pointing. An additional window will be displayed on the right for you to select these values as shown below:
 
