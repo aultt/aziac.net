@@ -3,7 +3,7 @@ title: "Oracle Infrastructure as Code on Azure"
 permalink: /docs/pages/
 
 # Oracle Infrastructure as Code in Azure
-![Architecture Diagram](aultt/aziac.net/docs/assets/images/oraclePostImage.jpeg)
+![Architecture Diagram](oraclePostImage.jpeg)
 
 Are you looking to move Oracle workloads to Azure? Want to establish an Oracle development environment in Azure? Before getting started, I suggest you check out the following [video](https://www.youtube.com/watch?v=yoNZ_H2zOqk). After watching the video, you will have a good understanding of all the things to consider when moving Oracle workloads to Azure.
 
