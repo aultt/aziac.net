@@ -1,4 +1,4 @@
-# [Oracle Infrastructure as Code in Azure](/pages/Oracle-Infrastructure-as-Code-in-Azure.md)
+## [Oracle Infrastructure as Code in Azure](/pages/Oracle-Infrastructure-as-Code-in-Azure.md)
 
 
 ### Contact
