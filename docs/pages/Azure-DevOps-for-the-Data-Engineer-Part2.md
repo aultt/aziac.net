@@ -26,7 +26,7 @@ Number 2 is optional as you could leave your domain DemoLab.local, but you may w
 ### SQL Server Stand Alone
 Next, we will walk through our SQL Server ARM template which can be found in my GitHub and named [SqlServerSingle](https://github.com/aultt/SQLServerSingle). If you have utilized any of my SQL Server templates in the past then you will find this familiar. There are a few minor changes which I have done. Looking through the DSC configuration script, you will find the template supports SQL Server from SQL 2016 through SQL 2019. Like our developer workstation the configuration will place our SQL Server in our domain, set our time zone, install SQL Server, set all best practices, and create an SPN for SQL Server. Wait did you say SPN? Yes, once this is all put together, we will have a fully functional lab environment which leverages Kerberos authentication. Now that we understand what our configuration will do, let’s look at the changes we need to make to our parameters file.
 
-![Image2](assets/images/devopspart2Image2.png)
+![Image2](assets/images/DevOpsPart2Image2.png)
 
 As before, number 3 is optional as this is the domain name. In this template there is one additional change which is needed as we now have a SQL Service account that we need to retrieve a password for. You can now save and publish all your code to your repo as we move to the final piece, the DevOps pipeline.
 
