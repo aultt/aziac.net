@@ -1,4 +1,5 @@
-## Welcome to GitHub Pages
+## Welcome to my blog Landing Page
+# I have consolidated all my blogs from years past into a Static GitHub Pages
 
 [Oracle Infrastructure as Code in Azure](/pages/Oracle-Infrastructure-as-Code-in-Azure.md) to maintain and preview the content for your website in Markdown files.
 
