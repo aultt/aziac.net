@@ -1,6 +1,6 @@
-# Below you will find all previous blogs from my years at Microsoft. 
+## Below you will find all previous blogs from my years at Microsoft. 
 
-[Oracle Infrastructure as Code in Azure](/pages/Oracle-Infrastructure-as-Code-in-Azure.md)
+## [Oracle Infrastructure as Code in Azure](/pages/Oracle-Infrastructure-as-Code-in-Azure.md)
 
 
 ### Support or Contact
