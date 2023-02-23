@@ -13,17 +13,17 @@ Next, let’s discuss the tools we leverage for building out your first Oracle d
 ## Architecture
 To isolate our environment the solution will deploy without any public endpoints. Since this is a stand along environment a new vnet is deployed which consists of three subnets. One subnet is leveraged for the virtual machine, another is leveraged key vault, and the final is utilized by Bastion. Key Vault will whitelist the public ip address of your machine to ensure you can connect after the deployment. See Architectural diagram below:
 
-![Architecture Diagram](../../images/OracleArchImage.png)
+![Architecture Diagram](assets/images/OracleArchImage.png)
 
 ## Problem Statement
 Before we dig into the specifics, let’s address the problem we are trying to solve. Today customers looking to move their Oracle workloads to Azure but don’ know where to start. Installing Oracle is a time consuming task. Often there are limited number of engineers with the background required to implement. Azure adds new VM sku’s regularly. As they are added we want to run stress tests with different size and number of disks to determine how they will perform. Automating the oracle deployment allows us to reduce time to deploy and provide a tool which could automatically test/validate a VM and disk configuration.
 
-![Teraform Flow](../../images/TeraformFlow.png)
+![Teraform Flow](assets/images//TeraformFlow.png)
 
 ## Approach
 Let’s walk through my approach on solving the problem. Leveraging Terraform for the infrastructure portion allows us to provide variables and allow the deployment to be easily customized. As a result you have the capability to configure the vm size, number of disks, size of disks, and caching. Terraform allows us to define a variable file which allows a you to pass and quickly deploy a POC environment. Below is a simple flow diagram for the Terraform code.
 
-![Ansible Flow](../../images/Ansible-Flow.png)
+![Ansible Flow](assets/images//Ansible-Flow.png)
 
 Once the terraform deployment has finished, you will need to complete one step. While this could be automated in the future or handled in a pipeline today, you need to kick off the script. First log into the VM with the Bastion Service, and the Key, which is stored in Key Vault. Next do an ls at the command prompt. Two files should exist, an ansible yml file which is the playbook, and a shell script which will deploy the playbook. Execute the playbook by typing . ./deployoracle.sh. The script should complete in approximately fifteen minutes. Once complete, the Oracle database will be configured with ASM and all the variables you defined. Below you will find a process flow of the Ansible Playbook.
 
