@@ -10,7 +10,7 @@ Let’s get started. First thing you will want to do is to fork the [DomainContr
 
 Now that our prerequisites are complete let’s open the GitHub repository we downloaded and see what is included. After you have downloaded it, open the folder in Visual Studio Code. You will find the files which are shown in the picture below:
 
-![image1](assets/images/DevOpsPart1Image1.png)
+![image1](assets/images/DevOpsPart1image1.png)
 
 ## DSC Configuration changes
 First item on the list is the DSC folder. Within the folder we will find all the DSC modules we will leverage to build out our domain controller (DC) and DSC configuration file. If you aren’t familiar with Desired State Configuration (DSC) check out my earlier posts which walk through it in more detail. For this post we will walk through how to modify files to deploy your DC but won’t walk through how DSC does the work. Within the DSC folder the only file you will want to update is the Domain.ps1 file. Within this file there are users who are created for our environment.
