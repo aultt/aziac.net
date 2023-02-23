@@ -1,4 +1,5 @@
 # Azure DevOps for the Data Engineer Part 2
+![image0](assets/images/DevOpsPart2Image0.png)
 
 Welcome back as we continue from our previous discussion, where we discussed deploying a domain controller in Azure with ARM and DevOps. If you missed it, read the previous blog post. Here we will leverage two more ARM templates which I have published to my GitHub account. The first one is [DeveloperWorkstation](https://github.com/aultt/DeveloperWorkstation).
 
