@@ -1,6 +1,8 @@
 # Automating SQL Server In Azure with Azure Resource Manager(ARM) Part 2
 ![image0](assets/images/autosqlpart2image0.png)
 
+1/3/2019
+
 Continuing where we left off from our last post, we are now going to look into a more complex Azure Resource Manager (ARM) template. In this post we will cover an Always On deployment to an existing VNet and domain.
 
 Provided you read the first post in this series, you will have a copy of my Github ARM repo local to your machine. If not, head over to Github and download or fork a copy from [here](https://github.com/aultt/ARM).

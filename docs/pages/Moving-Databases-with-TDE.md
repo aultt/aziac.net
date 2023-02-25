@@ -1,6 +1,8 @@
 # Moving Databases with TDE to Azure SQL MI
 ![image0](assets/images/movingdbimage0.png)
 
+1/19/2020
+
 Many customers are long on their journey to Azure, while some are just beginning. As customers begin to look at migrating databases, security is typically the first discussion point. By default, Azure SQL encrypts data at rest and in transit. Azure does this utilizing a system managed key, however, you may also bring your own key (BYOK) if you would like too.
 
 In this blog post I am going to discuss moving a database to Azure SQL Managed instance which is currently leveraging transparent data encryption (TDE). There are three options of how this can be implemented. The first is to configure your Managed Instance (MI) to utilize a customer-managed key. Reference documentation can be found [here](https://learn.microsoft.com/en-us/azure/azure-sql/database/transparent-data-encryption-byok-overview?view=azuresql). The second is to just restore your database to MI and allow MI to manage the encryption key. Reference documentation can be found [here](https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/tde-certificate-migrate?tabs=azure-powershell&view=azuresql). The third is to leverage a managed service, Data Migration Service (DMS), which will restore the database and migrate the certificate for you. Reference documentation can be found [here](https://learn.microsoft.com/en-us/azure/dms/tutorial-sql-server-to-managed-instance#configure-migration-settings).

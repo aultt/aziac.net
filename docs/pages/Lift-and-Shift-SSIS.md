@@ -1,6 +1,8 @@
 # Lift and Shift SSIS to Azure
 ![image0](assets/images/liftandshiftimage0.png)
 
+3/8/2019
+
 With SQL Server 2008 end of life around the corner, July 9 2019 for those not aware, many companies are looking to lift and shift their SQL environments to the cloud. In doing so, most companies are looking for the opportunity to move to Platform as a Service (PaaS) because of the savings.
 
 When we talk lift and shift of data, most times my discussions have been around moving SQL Server to Azure SQL Managed Instance. What about the other services which companies have leveraged for years on-prem? One of the services being SSIS which many companies have invested time and resources developing data flows. Luckily, these can be fairly easily lifted and shifted in in Azure with minimal or no code changes. Within this blog post I will discuss many of the steps required to configure the SSIS runtime, but more importantly, I will call out all the references to the official documentation for each component.

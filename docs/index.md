@@ -9,8 +9,10 @@
 ## [Automating SQL Server in ARM Part 2](/pages/Automating-SQL-In-Azure-Part2.md)
 ## [Automating SQL Server in ARM Part 1](/pages/Automating-SQL-In-Azure-Part1.md)
 ## [SQL Server Modern Data Platform](/pages/SQL-Server-Modern-Data-Platform.md)
-## [Desired State Configuration (DSC) for SQL Server **Update](/pages/DSC-For-SQL-Update.md)
-
+## [Desired State Configuration (DSC) for SQL Server FailoverCluster](/pages/DSC-For-SQL-FC.md)
+## [Desired State Configuration (DSC) for SQL Server AlwaysOn](/pages/DSC-For-SQL-Update.md)
+## [Automating Lab Environments with LabInaBox on-Prem or in the Cloud](/pages/LabinaBox-Onprem-or-Cloud.md)
+## [Utilizing Key Vault to create credentials for automation](/pages/Utilizing-Key-Vault-Automation.md)
 
 
 

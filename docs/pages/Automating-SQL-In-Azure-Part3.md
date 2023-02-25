@@ -1,6 +1,8 @@
 # Automating SQL Server In Azure with Azure Resource Manager(ARM) Part 3
 ![image0](assets/images/autosqlpart3image0.png)
 
+1/15/2019
+
 Finishing out the series on SQL Server Automation for IaaS. The final template is SQL Server Failover Cluster Instance running on storage spaces direct.
 
 Source code for this and all other templates can be found on my Github. For this template the direct link is [here](https://github.com/aultt/ARM/tree/master/FCIS2DExistingVnet).

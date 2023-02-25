@@ -1,6 +1,8 @@
 # Automating SQL Server In Azure with Azure Resource Manager(ARM) Part 1
 ![image0](assets/images/autosqlpart1image0.png)
 
+1/2/2019
+
 In the previous blog entry, we talked about the different options available for SQL Server running in a PaaS solution in Azure. Today we will focus on the IaaS solutions available.
 
 Let’s get started! We have four different options when implementing SQL Server in an IaaS solution. The first three will be familiar if you have deployed SQL Server on-prem previously, with a couple of slight differences. We have SQL Server stand alone, SQL Server AlwaysOn Availability Groups, SQL Server failover cluster instance (FCI) , and finally SQL Server running in a container within Azure Kubernetes Service.

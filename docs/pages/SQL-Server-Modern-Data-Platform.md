@@ -1,6 +1,8 @@
 # SQL Server Modern Data Platform
 ![image0](assets/images/sqlmdpimage0.png)
 
+1/1/2019
+
 Are you looking to modernize your data platform? Do you have need to quickly get off a version of SQL Server which is approaching end of life? Today I am going to walk through through the different options and help you determine how you will run SQL Server in the future.sql
 
 Before we talk about how will will run SQL Server in the future lets look back over the evolution.

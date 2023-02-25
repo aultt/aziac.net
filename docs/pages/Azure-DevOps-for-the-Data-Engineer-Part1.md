@@ -1,6 +1,8 @@
 # Azure DevOps for the Data Engineer Part 1
 ![image0](assets/images/DevOpsPart1Image0.png)
 
+8/10/2020
+
 Working with customers, I often need to spin up environments to demo/test/validate different scenarios. In the past I have kept a Hyper-V lab which housed all the different versions of SQL. This became a management overhead to ensure they were up to date. In addition, the number of releases and the supported platforms continued to increase. Customers also are looking to move their data workloads to Azure and therefore are looking at ways to automate. In the past I developed ARM templates for most of the SQL Server scenarios to aid in this. Testing was painful and caused for these templates to become outdated over time. The answer is to put them into a pipeline to ensure there are not steps missed in the deployment. Unfortunately, I was unable to find documentation on how to implement an ARM template within an Azure DevOps pipeline.
 
 Therefore, I have worked through the process and would like to document for others and myself to reference later. My approach was to develop ARM templates which could be leveraged like Lego pieces to build out several different pipelines. The two pieces which will be used for all my SQL deployments are domain controller and workstation. For this post I will walk through the domain controller template, talk to what changes you will need to make, and show how you can build a simple DevOps pipeline to deploy it.
