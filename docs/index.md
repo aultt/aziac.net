@@ -4,6 +4,7 @@
 ## [Moving Databases with TDE to SQL MI](/pages/Moving-Databases-with-TDE.md)
 ## [Enabling Auditing and Diagnostics on Azure SQL](/pages/Enable-Auditing-AzureSQL.md)
 ## [Managing Azure Data Services Costs through Automation](/pages/Managing-Azure-Data-Services-Costs.md)
+## [Lift and Shift SSIS to Azure](/pages/Lift-and-Shift-SSIS.md)
 
 
 ### Contact
