@@ -22,7 +22,7 @@
 ## [SQL DSC AlwaysOn Support](/pages/SQL-DSC-AlwaysOn-Support.md)
 ## [DSC for SQL Server](/pages/DSC-For-SQL.md)
 ## [AlwaysOn Availability Group Automation Part 2](/pages/AlwaysOn-AG-AutomationPart2.md)
-## [lwaysOn Availability Group Automation Part 2](/pages/AlwaysOn-AG-AutomationPart1.md)
+## [AlwaysOn Availability Group Automation Part 2](/pages/AlwaysOn-AG-AutomationPart1.md)
 
 ### Contact
-[contact support](mailto:troy@aziac.net)
+[Comments or Feedback](mailto:troy@aziac.net)
