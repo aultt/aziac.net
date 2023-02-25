@@ -9,6 +9,10 @@
 ## [Automating SQL Server in ARM Part 2](/pages/Automating-SQL-In-Azure-Part2.md)
 ## [Automating SQL Server in ARM Part 1](/pages/Automating-SQL-In-Azure-Part1.md)
 ## [SQL Server Modern Data Platform](/pages/SQL-Server-Modern-Data-Platform.md)
+## [Desired State Configuration (DSC) for SQL Server **Update](/pages/DSC-For-SQL-Update.md)
+
+
+
 
 ### Contact
 [contact support](https://support.github.com/contact)
