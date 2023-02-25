@@ -5,6 +5,9 @@
 ## [Enabling Auditing and Diagnostics on Azure SQL](/pages/Enable-Auditing-AzureSQL.md)
 ## [Managing Azure Data Services Costs through Automation](/pages/Managing-Azure-Data-Services-Costs.md)
 ## [Lift and Shift SSIS to Azure](/pages/Lift-and-Shift-SSIS.md)
+## [Automating SQL Server in ARM Part 3](/pages/Automating-SQL-In-Azure-Part3.md)
+## [Automating SQL Server in ARM Part 2](/pages/Automating-SQL-In-Azure-Part2.md)
+## [Automating SQL Server in ARM Part 1](/pages/Automating-SQL-In-Azure-Part1.md)
 
 
 ### Contact
