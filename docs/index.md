@@ -18,8 +18,11 @@
 ## [Automating installation of SSMS with DSC](/pages/Automating-SSMS.md)
 ## [Introducing LabInaBox](/pages/Introducing-LabInaBox.md)
 ## [Introducing DSC Data Driven Deployment](/pages/Introducing-DSC_DDD.md)
-
-
+## [SQL DSC Encrypted Configuration](/pages/SQL-DSC-Encrypted-Config.md)
+## [SQL DSC AlwaysOn Support](/pages/SQL-DSC-AlwaysOn-Support.md)
+## [DSC for SQL Server](/pages/DSC-For-SQL.md)
+## [AlwaysOn Availability Group Automation Part 2](/pages/AlwaysOn-AG-AutomationPart2.md)
+## [lwaysOn Availability Group Automation Part 2](/pages/AlwaysOn-AG-AutomationPart1.md)
 
 ### Contact
 [contact support](https://support.github.com/contact)
