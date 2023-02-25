@@ -3,7 +3,7 @@
 ## [Azure DevOps for the Data Engineer Part 1](/pages/Azure-DevOps-for-the-Data-Engineer-Part1.md)
 ## [Moving Databases with TDE to SQL MI](/pages/Moving-Databases-with-TDE.md)
 ## [Enabling Auditing and Diagnostics on Azure SQL](/pages/Enable-Auditing-AzureSQL.md)
-
+## [Managing Azure Data Services Costs through Automation](/pages/Manage-Azure-Data-Services-Costs.md)
 
 
 ### Contact
