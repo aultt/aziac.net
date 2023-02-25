@@ -25,4 +25,4 @@
 ## [lwaysOn Availability Group Automation Part 2](/pages/AlwaysOn-AG-AutomationPart1.md)
 
 ### Contact
-[contact support](https://support.github.com/contact)
+[contact support](mailto:troy@aziac.net)
