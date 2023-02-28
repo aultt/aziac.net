@@ -1,0 +1,682 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Enabling Auditing and Diagnostics on Azure SQL with PowerShell - Azure Infrastructure as Code</title>
+<meta name="description" content="8/30/2017 2:48:12 PM">
+
+
+  <meta name="author" content="Troy Ault">
+  
+  <meta property="article:author" content="Troy Ault">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure Infrastructure as Code">
+<meta property="og:title" content="Enabling Auditing and Diagnostics on Azure SQL with PowerShell">
+<meta property="og:url" content="http://localhost:4000/blog/LabinaBox-Onprem-or-Cloud/">
+
+
+  <meta property="og:description" content="8/30/2017 2:48:12 PM">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2017-08-30T14:48:12-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/LabinaBox-Onprem-or-Cloud/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Azure Infrastructure as Code Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Azure Infrastructure as Code
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/MyPortfolioimage.png" alt="Troy Ault" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Troy Ault</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Automation one day at a time!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://troyault.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">troyault.com</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/aultt" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Enabling Auditing and Diagnostics on Azure SQL with PowerShell">
+    <meta itemprop="description" content="8/30/2017 2:48:12 PM">
+    <meta itemprop="datePublished" content="2017-08-30T14:48:12-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/blog/LabinaBox-Onprem-or-Cloud/" class="u-url" itemprop="url">Enabling Auditing and Diagnostics on Azure SQL with PowerShell
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>8/30/2017 2:48:12 PM</p>
+
+<p>Today building out repeatable demo/lab environments quickly has become a necessity.  Previous this year I released LabInaBox which provided for a quick way to build out lab environments on a Windows 10 machine using Hyper-V.  As more and more customers are looking at Azure I wanted to provide a similar experience for cloud lab deployment.  Today I will walk through the new GUI interface which has been deployed with this release and discuss how you can leverage LabInaBox to build test environments in Hyper-V or in Azure.</p>
+
+<h1 id="install-labinabox">Install LabInaBox</h1>
+<p>First things first we need to install LabInaBox.  The installation msi can be found on GitHub here.  Simply download the msi locally to your machine.  After downloading you will need to unblock the file before you can execute the msi.  You can do this by right clicking on the executable and selecting properties then clicking the unblock box.</p>
+
+<p>After executing you will be prompted for the installation Folder by default it will place in the C:LabInaBox folder.  The installation path can be modified, however I would recommend not placing it in the program files folder as files are created by the application in this directory which would require administrative privileges.  After the setup completes you should have a folder structure with supporting files.</p>
+
+<p>At this point we have all the files required to move forward Azure Deployment.  If we want to also leverage the Hyper-V lab scenario we will need to provide a sysprepped Windows2016 image in the ParentVMDisks folder.  Due to licensing and size of the file I was not able to package this into the installation.  If you need further instructions on creating the sysprepped image further details can be found in the <a href="https://github.com/Microsoft/DSC-data-driven-deployment/tree/dev/utility/LabInaBox">ReadMe</a> under installation.</p>
+
+<h1 id="labinabox-layout">LabInaBox Layout</h1>
+<p>LabInaBox has a GUI configuration utility which will aid you in generating files you will leverage to build out your labs.    To further understand the layout I will walk through the steps for creating these files then go into the detail of what the files are and how to leverage them.  So lets get started by launching LabInaBox.</p>
+
+<p>You have the option of starting from scratch selecting which type of Lab you want to build and filling out the appropriate fields, however for simplicity I have have provided templates which you can open and modify then generate your lab files.  We will walk through the Azure one first.  To utilize these click File..Open and select DefaultAzureConfig.json.</p>
+
+<h1 id="azure-labinabox">Azure LabInaBox</h1>
+<p>Generate Azure Lab Automation Scripts
+Below you see the values which have been pre-populated from the template.  Notice there are three values which are either blank or have XXXX that you will need to provide the details for.  These are Azure Login Certificate Name, Azure ApplicationID and Azure Tenant ID.  The Azure Lab scripts require you to have created a service principal name with a certificate so that you can automatically log into azure from your machine without user input.  If you have not read and completed this step please refer to my previous <a href="https://learn.microsoft.com/en-us/archive/blogs/troy_aults_blog/loginazurewithoutprompt">blog</a> where I walk you through the steps.</p>
+
+<p>Once you provide the three required values discussed above you could click Finish and the fields will be generated with the values provided.  However, you may want to change a few things here though so lets walk through some of these items and explain.  Lab Machine Prefix is utilized to create a folder structure on disk where the scripts are stored.  You will also see this same prefix is what I chose to pass for my Domain Name and I prepended it to each machine name.  I prefer this as I know when looking at the machine what lab it is tied to.  Other items you will likely want to change are the Domain Admin Username and Password and the VMUserName and Password.  Domain Admin is as it sounds the domain administrator for the domain and VMUsername is the local administrator on the machine.  Azure Publisher, Azure Offer, AzureSku and OS are all values which determine which azure template is utilized to build the VM.  Three additional items of interest which you may not immediately follow are Azure Automation Account, Azure Automation Resource Group, and DSC Configuration.  Azure Automation Account is the name of the automation account which will be generated via the PowerShell scripts and it will be created in the Azure Automation Resource Group.  All DSC Scripts, modules ect. will be uploaded to this location.  A separate resource group is leveraged here so that in if we have a nightly destroy script to remove resource groups we can easily filter out our automation account.  DSCConfiguration is the final item of interest here.  When you install LabInaBox two configurations are provided DomainConfig and SQLAzureConfig.  Additional ones can be added overtime as the community feels needed.  Make your changes and click Finish.  Upon clicking Finish the application will close and open windows explorer showing the files it has generated.  You should see something similar to below.  Notice its created in the LabConfig directory under TST which was our LabPrefix.  Each file is prefaced with our prefix.</p>
+
+<h2 id="what-are-these-files-generated-and-how-do-i-leverage-them">What are these files generated and how do I leverage them?</h2>
+<p>Notice we have three files here, one JSON file and two ps1 files.  Lets take a look at the JSON file first.  I am utilizing Visual Studio Code to analyse the file.  Below we see the contents of the JSON file.  Notice first I did not provide the Certificate Subject, ApplicationID, or TenantID but I was able to generate the scripts.  If I ran the scripts currently they would error because these are required to connect to Azure.  Throughout the JSON file we see all the information we input into the GUI tool and some additional ones which are automatically generated.</p>
+
+<p>There is nothing we need to change here I just wanted to show this file is generated and the PowerShell scripts will consume these values.  We could modify/create this file manually if we wanted however we could also open the file in the tool and modify it and click finish and the scripts will be updated.</p>
+
+<p>The next file listed is TST_Create.ps1</p>
+
+<p>First item in the script is to load a custom module LabinaBox.psm1.  You will notice it has a WarningAction of Silently Continue.  This suppresses the warning message which is generated because Login-AzureCert doesnt comply with naming standards.  Next we see a series of cmdlet calls which will build out our AzureLab environment and configure it.  Notice each cmdlet takes a parameter of configuration.  Configuration is the JSON file we looked at previously.  Within each module this json file will be converted into a PSCustom Object so that each property can be dot source referenced.  A quick run down of each cmdlet and what it is used for is listed below for reference:</p>
+
+<p>New-AzureLab</p>
+
+<p>Creates ResourceGroup for Lab
+Creates Azure Virtual Network
+Creates Each Azure VM requested
+Publish-AzureDSModules</p>
+
+<p>Creates ResourceGroup for Automation Account
+Creates Automation Account
+Creates Storage Account
+Creates StorageContainer
+Uploads DSC Modules from Install LocationLabInaBoxDSCResourcesAzureAutomation to container
+Creates AzureAutomationModule from uploaded file
+New-AzureDSCConfigurations</p>
+
+<p>Creates Credentials in Automation account
+Imports DSC Configurations to AutomationAccount
+Compile-AzureDSCConfiguration</p>
+
+<p>Compiles each configuration for each node requested
+Set-AzureDSCNodeConfigurations</p>
+
+<p>Registers each Node with AzureAutomation DSC
+Applies configuration requested
+The final file is TST_Remove.ps1</p>
+
+<p>Below describes what each of these cmdlets do:</p>
+
+<p>RemoveAzureDSCNodeConfiguration</p>
+
+<p>Removes Configuration from server
+Unregisters server from Azure Automation DSC
+Remove-AzureLab</p>
+
+<p>Removes Lab Resource Group and all items in ResouceGroup</p>
+
+<h1 id="hyper-v-labinabox">Hyper-V LabInaBox</h1>
+<p>Similarly you can generate a Lab onprem on a Hyper-V server.  In this case as mentioned before we will need Windows10 as well as a sysprepped image before we can move on.  Once we have these we can again click File…Open and select Default_Private_Config.json.</p>
+
+<p>Similar to the Azure LabInaBox you may want to change a few properties here.  To Start Lab Machine Prefix similar to the Azure will drive how the folder structure is created for the scripts.  Unlike the Azure component this is prepended by default to all VMs which are created because we do not have a Resource Group to break them out we need to ensure we dont overlap Vms.  Moving down the list in this example I name the switch based on the subnet I am utilizing for the lab, this is not required but something I found easier to identify later.  As you move down the list there are Folder paths to set.  This allows you move things around if you have more than one drive in your machine and you want to segregate the IO workload.  Servers is just a comma separated list of server names you want created, keep in mind the lab prefix will be pre-pended to the name.   ISO selection allows you to mount ISOs as drives on the domain controller so you can install additional software later.  Once you select the ISO FOlder Path the values will populate in the drop down.  If we stop here in this example we will get three machines.  One Domain controller named PRV-DC and two windows servers named PRV-SQL1 and PRV-SQL2.  Our domain controller will have DHCP,DNS, AD, and certificate services configured so we are ready to begin playing with DSC configurations.  If we are looking for additional functionality we look at the last four boxes.  Developer Machine will create another windows machine PRV-DEV which will be leveraged for any scripting or development.  DSC Central will create an additional vm named PRV-DSC.  PRV-DSC will have a DSC configuration applied to it which installs SQL Server and sets up the <a href="https://github.com/Microsoft/DSC-data-driven-deployment">DSC Data Driven Deployment</a> solution found on GitHub.  Clicking Finish as before will present us with the scripts which are generated.</p>
+
+<p>Notice with Hyper-V we have several additional scripts which are generated.  With HyperV we have scripts to Start, Stop, Update, Create, Remove and Checkpoint a Lab.  Hyper-V scripts are setups the same as the Azure LabInabox in that each cmdlet also takes configuration as a parameter where configuration is a JSON.</p>
+
+<h1 id="wrap-up">Wrap-Up</h1>
+<p>All of the cmdlet code can be found in the one module LabInaBox.psm1.  In general my approach with here was to be able to easily and quickly generate a lab in Hyper-V or Azure.  With that being said all the PowerShell cmdlets can be used as examples of how you could automate your workloads in your environment.  Please feel free to comment or contribute to the solution on GitHub.</p>
+
+<p>Happy Automating till Next Time!</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#azure" class="page__taxonomy-item p-category" rel="tag">Azure</a><span class="sep">, </span>
+    
+      <a href="/tags/#powershell" class="page__taxonomy-item p-category" rel="tag">PowerShell</a><span class="sep">, </span>
+    
+      <a href="/tags/#sql-server" class="page__taxonomy-item p-category" rel="tag">SQL Server</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#blog" class="page__taxonomy-item p-category" rel="tag">blog</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2017-08-30T14:48:12-04:00">August 30, 2017</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Enabling+Auditing+and+Diagnostics+on+Azure+SQL+with+PowerShell%20http%3A%2F%2Flocalhost%3A4000%2Fblog%2FLabinaBox-Onprem-or-Cloud%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FLabinaBox-Onprem-or-Cloud%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FLabinaBox-Onprem-or-Cloud%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/Utilizing-Key-Vault-Automation/" class="pagination--pager" title="Utilizing Key Vault for Automation
+">Previous</a>
+    
+    
+      <a href="/blog/DSC-For-SQL-Update/" class="pagination--pager" title="Desired State Configuration (DSC) for SQL Server AlwaysOn
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Oracle-Infrastructure-as-Code-in-Azure/" rel="permalink">Oracle Infrastructure as Code in Azure
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part2/" rel="permalink">Azure DevOps for the Data Engineer Part 2
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part1/" rel="permalink">Azure DevOps for the Data Engineer Part 1
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Moving-Databases-with-TDE/" rel="permalink">Moving Databases with TDE to Azure SQL MI
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Azure Infrastructure as Code. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

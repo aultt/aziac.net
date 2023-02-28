@@ -1,0 +1,656 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Lift and Shift SSIS to Azure - Azure Infrastructure as Code</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Troy Ault">
+  
+  <meta property="article:author" content="Troy Ault">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure Infrastructure as Code">
+<meta property="og:title" content="Lift and Shift SSIS to Azure">
+<meta property="og:url" content="http://localhost:4000/blog/Lift-and-Shift-SSIS/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-03-07T23:00:20-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/Lift-and-Shift-SSIS/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Azure Infrastructure as Code Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Azure Infrastructure as Code
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/MyPortfolioimage.png" alt="Troy Ault" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Troy Ault</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Automation one day at a time!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://troyault.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">troyault.com</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/aultt" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Lift and Shift SSIS to Azure">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2019-03-07T23:00:20-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/blog/Lift-and-Shift-SSIS/" class="u-url" itemprop="url">Lift and Shift SSIS to Azure
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><img src="/assets/images/liftandshiftimage0.png" alt="image0" /></p>
+
+<p>3/8/2019</p>
+
+<p>With SQL Server 2008 end of life around the corner, July 9 2019 for those not aware, many companies are looking to lift and shift their SQL environments to the cloud. In doing so, most companies are looking for the opportunity to move to Platform as a Service (PaaS) because of the savings.</p>
+
+<p>When we talk lift and shift of data, most times my discussions have been around moving SQL Server to Azure SQL Managed Instance. What about the other services which companies have leveraged for years on-prem? One of the services being SSIS which many companies have invested time and resources developing data flows. Luckily, these can be fairly easily lifted and shifted in in Azure with minimal or no code changes. Within this blog post I will discuss many of the steps required to configure the SSIS runtime, but more importantly, I will call out all the references to the official documentation for each component.</p>
+
+<p>First thing that will be required is SSIS integration runtime. With the integration run time, we can leverage Azure SQL Database Server or Managed Instance to deploy our SSISDB. Is the concept of Integration runtime(IR) in Azure Data Factory a a new one to you? If so, then take a look at the following <a href="https://learn.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime">documentation</a> which details all the different IR types available. A brief description of SSIS IR is the following taken from the documentation referenced above:</p>
+
+<p>Azure-SSIS IR is a fully managed cluster of Azure VMs dedicated to run your SSIS packages. You can bring your own Azure SQL Database or Managed Instance server to host the catalog of SSIS projects/packages (SSISDB) that is going to be attached to it. You can scale up the power of the compute by specifying node size and scale it out by specifying the number of nodes in the cluster. You can manage the cost of running your Azure-SSIS Integration Runtime by stopping and starting it as you see fit.</p>
+
+<p>Creating the SSIS IR is <a href="https://learn.microsoft.com/en-us/azure/data-factory/create-azure-ssis-integration-runtime">documented</a> very well for both deploying through the portal, PowerShell, or via Azure Resource Manager template. Depending on what your packages utilize you may need to do some custom configuration of the SSIS IR. <a href="https://learn.microsoft.com/en-us/azure/data-factory/how-to-configure-azure-ssis-ir-custom-setup">Documentation</a> around limitations and considerations should be reviewed. Custom setup lets you alter the default operating configuration or environment (for example, to start additional Windows services or persist access credentials for file shares) or install additional components (for example, assemblies, drivers, or extensions) on each node of your Azure-SSIS IR.</p>
+
+<p>The example I ran into recently was leveraging windows files shares within a package. If the SSIS package is relatively small, then updating file shares and changing them over to a URL to a blob store may be simple. However, if the package has many references to UNC paths changing, then these could be time consuming and require much regression testing. Luckily the steps to prevent this work is relatively easy.</p>
+
+<p><a href="https://learn.microsoft.com/en-us/azure/data-factory/ssis-azure-connect-with-windows-auth?view=sql-server-2017">Documentation</a> exists for connecting data sources and file shares with SSIS packages in Azure, however, for my specific example it wasn’t crystal clear the steps that were required. So I’m documenting here in hopes it will save others some time. In order to move forward, you will need an already configured SSIS IR and a storage account with files shares. We covered SSIS IR earlier in this post. If you need assistance in creating the storage account and file share, then there is a nice walkthrough which can be found <a href="https://learn.microsoft.com/en-us/azure/storage/files/storage-files-quick-create-use-windows">here</a>. Ensure you have a blob container created and a file share.</p>
+
+<p>Now we have our pre-reqs we can move to our custom configuration of our SSIS IR. We need to collect some information from our file share, specifically the username and key. To do this, navigate to the storage account, select Files, then select the file share you created. Next click Connect as shown below.</p>
+
+<p><img src="/assets/images/liftandshiftimage1.png" alt="image1" /></p>
+
+<p>After selecting this you will be presented with options for Windows, Linux, and MacOS. For our purposes we just need the UNC path, the user name, and the key. I have cleared out my storage key but show both the others below.</p>
+
+<p><img src="/assets/images/liftandshiftimage2.png" alt="image2" /></p>
+
+<p>Once we have these three then we can now move to create a main.cmd file which will be called by the SSIS IR. Below you will see the contents of our file. You will want to replace the with your URL, user, and pass. you obtained above. Save this file as we will upload it to our blob store next.</p>
+
+<p><img src="/assets/images/liftandshiftimage3.png" alt="image3" /></p>
+
+<p>Next we need to upload our main.cmd file to the container we created in our blob store. Navigate to this container and upload the file. Once you have uploaded the file, we then need to create a Shared access signature. The easiest way to do this is using Azure Storage Explorer. You can easily launch it by going to the overview of the storage account and clicking Open In Explorer.</p>
+
+<p><img src="/assets/images/liftandshiftimage4.png" alt="image4" /></p>
+
+<p>If you don’t have Azure Storage Explorer downloaded, then it will provide a link for you to download it. If you do, then you can launch it directly from the portal. Once storage explorer is opened you will need to connect to your azure subscription and browse to your storage account. Right click on the storage container and select Get Shared Access Signature.</p>
+
+<p><img src="/assets/images/liftandshiftimage5.png" alt="image5" /></p>
+
+<p>Ensure you grant Read, Write, and List permissions for the signature. You will want to consider how long this Signature should be valid. Once this expires you will need to reconfigure your SSIS IR. Whatever you decide, make a note and a reminder on your calendar to update it once it expires. Once you click Create you will be presented with the URL and Query string. Copy both and store for later.</p>
+
+<p><img src="/assets/images/liftandshiftimage6.png" alt="image6" /></p>
+
+<p>Finally we are ready to configure our custom SSIS IR and then start it up. To make this easier, I have provided a PowerShell script that you will need to update four variables at the top of the script and then execute it. The script is available on my GitHub account and its name is <a href="https://github.com/aultt/ProofOfConcepts/tree/master/SanitizeDBandUploadToAzure/PowerShell">ReconfigureSSISIR.ps1</a>. Download the PowerShell script and update the following variables at the top of the script $MyDataFactoryName , $MyAzureSsisIrName, $MyResourceGroupName, $MySetupScriptContainerSasUri. MySetupScriptContainerSasUri is the URL you copied from the previous step.</p>
+
+<p>You have now successfully configured your SSIS IR with a custom configuration which will allow your packages to reference a UNC path. Your package variables will now reference any file within the File Share as below. No credential are required because the custom configuration handles the authentication. If you haven’t deployed the package already then deploy the package to SSIS DB. You can now execute the package directly from SSIS DB catalog or create an ADF pipeline to execute the package.</p>
+
+<p><img src="/assets/images/liftandshiftimage7.png" alt="image7" /></p>
+
+<p>This concludes our custom configuration of the SSIS runtime, however, I would like to point out a few other things which may come up as a need as your are lifting your packages into Azure.</p>
+
+<p>If you have the need to copy files from your on-prem datacenter into Azure, then you will need to also have a <a href="https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory">self-hosted integration runtime</a>. This is a very easy setup, just requires downloading an MSI and installing it on an existing server. Something to consider if you are moving files to an azure storage and you have configured <a href="https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal">Azure Storage Firewalls</a>, then you will want to ensure your self-hosted integration runtime resides on a virtual machine running in a Vnet/subnet which is permitted through the firewall.</p>
+
+<p>Two addition links I would like to provide you in case you find the need to <a href="https://learn.microsoft.com/en-us/azure/data-factory/concepts-pipeline-execution-triggers">call an Azure Data factory Pipeline through code</a> or <a href="https://learn.microsoft.com/en-us/azure/data-factory/how-to-schedule-azure-ssis-integration-runtime">schedule start and stop of SSIS IR</a>.</p>
+
+<p>Hopefully someone will save some time and frustration with the resources here today or at least utilize it for reference for the underlying articles. Happy Automating!</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#azure" class="page__taxonomy-item p-category" rel="tag">Azure</a><span class="sep">, </span>
+    
+      <a href="/tags/#sql-server" class="page__taxonomy-item p-category" rel="tag">SQL Server</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#blog" class="page__taxonomy-item p-category" rel="tag">blog</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2019-03-07T23:00:20-05:00">March 7, 2019</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Lift+and+Shift+SSIS+to+Azure%20http%3A%2F%2Flocalhost%3A4000%2Fblog%2FLift-and-Shift-SSIS%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FLift-and-Shift-SSIS%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FLift-and-Shift-SSIS%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/Automating-SQL-In-Azure-Part3/" class="pagination--pager" title="Automating SQL Server in Azure Part 3
+">Previous</a>
+    
+    
+      <a href="/blog/Managing-Azure-Data-Services-Costs/" class="pagination--pager" title="Managing Azure Data Services Costs through Automation
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Oracle-Infrastructure-as-Code-in-Azure/" rel="permalink">Oracle Infrastructure as Code in Azure
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part2/" rel="permalink">Azure DevOps for the Data Engineer Part 2
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part1/" rel="permalink">Azure DevOps for the Data Engineer Part 1
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Moving-Databases-with-TDE/" rel="permalink">Moving Databases with TDE to Azure SQL MI
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Azure Infrastructure as Code. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

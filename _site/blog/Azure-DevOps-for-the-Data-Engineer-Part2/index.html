@@ -1,0 +1,670 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure DevOps for the Data Engineer Part 2 - Azure Infrastructure as Code</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Troy Ault">
+  
+  <meta property="article:author" content="Troy Ault">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure Infrastructure as Code">
+<meta property="og:title" content="Azure DevOps for the Data Engineer Part 2">
+<meta property="og:url" content="http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part2/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-08-16T00:00:20-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part2/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Azure Infrastructure as Code Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Azure Infrastructure as Code
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/MyPortfolioimage.png" alt="Troy Ault" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Troy Ault</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Automation one day at a time!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://troyault.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">troyault.com</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/aultt" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Azure DevOps for the Data Engineer Part 2">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2020-08-16T00:00:20-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part2/" class="u-url" itemprop="url">Azure DevOps for the Data Engineer Part 2
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><img src="/assets/images/DevOpsPart2Image0.png" alt="image0" /></p>
+
+<p>8/16/2020</p>
+
+<p>Welcome back as we continue from our previous discussion, where we discussed deploying a domain controller in Azure with ARM and DevOps. If you missed it, read the previous blog post. Here we will leverage two more ARM templates which I have published to my GitHub account. The first one is <a href="https://github.com/aultt/DeveloperWorkstation">DeveloperWorkstation</a>.</p>
+
+<p>**Note to keep this post from becoming too long I will not cover creating the CI pipeline for the workstation and SQL Server. Please loop back to the previous post and follow the same steps.</p>
+
+<h3 id="developer-workstation">Developer Workstation</h3>
+<p>This ARM template will create a virtual machine, place the machine in our domain which we created previously, set the time zone, and finally install all our development tools we will want to leverage in our lab. Currently, the DSC configuration script installs the following components:</p>
+
+<ol>
+  <li>Azure Data Studio</li>
+  <li>Plugins for Azure Data Studio for PowerShell and SQL Server admin</li>
+  <li>AZcopy</li>
+  <li>SQL Server Management Studio</li>
+  <li>VSCode</li>
+  <li>Plugins for VSCode for SQL Server and PowerShell</li>
+</ol>
+
+<p>Installation of the tools is done leveraging the DSC module for Chocolatey. Therefore, adding additional tools is simple.</p>
+
+<p>We will need to update our azuredeploy.parameters.json file as we did earlier for our domain template. Below is the minimal values you should update.</p>
+
+<p><img src="/assets/images/devopspart2image1.png" alt="Image1" /></p>
+
+<p>Number 2 is optional as you could leave your domain DemoLab.local, but you may want to change to something more relevant. Update these values, save the files off and commit to your personal repo.</p>
+
+<h3 id="sql-server-stand-alone">SQL Server Stand Alone</h3>
+<p>Next, we will walk through our SQL Server ARM template which can be found in my GitHub and named <a href="https://github.com/aultt/SQLServerSingle">SqlServerSingle</a>. If you have utilized any of my SQL Server templates in the past then you will find this familiar. There are a few minor changes which I have done. Looking through the DSC configuration script, you will find the template supports SQL Server from SQL 2016 through SQL 2019. Like our developer workstation the configuration will place our SQL Server in our domain, set our time zone, install SQL Server, set all best practices, and create an SPN for SQL Server. Wait did you say SPN? Yes, once this is all put together, we will have a fully functional lab environment which leverages Kerberos authentication. Now that we understand what our configuration will do, let’s look at the changes we need to make to our parameters file.</p>
+
+<p><img src="/assets/images/DevOpsPart2Image2.png" alt="Image2" /></p>
+
+<p>As before, number 3 is optional as this is the domain name. In this template there is one additional change which is needed as we now have a SQL Service account that we need to retrieve a password for. You can now save and publish all your code to your repo as we move to the final piece, the DevOps pipeline.</p>
+
+<h3 id="devops-pipeline">DevOps Pipeline</h3>
+<p>Finally, we have all the pieces together to build our first pipeline which will deploy a fully function lab environment. I decided to separate the DevOps pipelines out to their own repo, so head over to my GitHub and download <a href="https://github.com/aultt/DevOpsSQLLab">DevOpsSQLLab</a>. Once you have forked the repo, open the azure-pipelines.yml file which is under the SQLServerSingeLab folder. You may ask why a folder? I will be adding additional pipelines here going forward as customers request or I find the need. Open the file in VSCode, notice unlike our last yml file we now have a stage line within our file. This allows us to set dependencies on one stage completing before another one starts. We are going to break this file into three sections. First section is stage DC.</p>
+
+<h3 id="domain-controller-stage">Domain Controller Stage</h3>
+<p>You have options when editing this file, you can edit it directly in Visual Studio code if you like, however, you will have to know the project id and number which isn’t easy to determine. My preference is to open the file up within my DevOps pipeline and edit it directly in the pipline. Take a look below at the screenshot and I will explain why.</p>
+
+<p><img src="/assets/images/devopspart2image3.png" alt="Image3" /></p>
+
+<p>As you can see above, we have three sections under DC which should look similar to what we saw in our domain controller pipeline. Above each is a Settings title which shows up in our pipeline. If you click this, then DevOps will present a fly out to the right with drop downs for you to select the Project and Build Pipeline. Here you will select your DevOps Pipeline along with your Build pipelines associated with your domain controller. Once complete, click add and this will be added back to your YAML file.</p>
+
+<p><img src="/assets/images/devopspart2image4.png" alt="Image4" /></p>
+
+<p>Continue to the next two items and modify the tasks as you did for the domain controller release pipeline previously. Once complete with each, click add and save back to the YAML file.</p>
+
+<h3 id="workstation-stage">Workstation Stage</h3>
+<p>Next stage is workstation. Walk through and make the same changes as you did above clicking add each time you complete a task. There is something additional to note here. Since we are leveraging stages, we can now set dependencies. As depicted in the diagram below, we set a dependency on domain controller as we cannot add the machine to the domain if the domain does not exist.</p>
+
+<p><img src="/assets/images/devopspart2image5.png" alt="Image5" /></p>
+
+<h3 id="sql-server-stage">SQL Server Stage</h3>
+<p>Finally, we are to our SQL Server stage. Follow the same process we have for the last two sections. Once complete, save your pipeline, give it a name, and run the pipeline.</p>
+
+<p><img src="/assets/images/devopspart2image6.png" alt="Image6" /></p>
+
+<p>After you run the pipeline you will get a graphical presentation of each stage of the pipeline. Below I show the pipeline once it has completed. Notice we get times for each stage of the pipeline, so we know how long each ran. Also take note workstation and SQL will not begin until DC has completed.</p>
+
+<p><img src="/assets/images/devopspart2image7.png" alt="Image7" /></p>
+
+<h3 id="wrapping-up">Wrapping Up</h3>
+<p>We now should have a fully functional lab environment for SQL Server. We can test any SQL Server functionality including Kerberos authentication. More importantly with our DevOps pipeline, we now have a YAML file we can work with to build even more complicated pipelines which have additional dependencies. For instance, think of multiregional environments where different components have dependencies on another resource. The possibilities are endless. Hopefully, you have found this exercise beneficial as always if you have questions add a comment or send me an email.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#arm" class="page__taxonomy-item p-category" rel="tag">ARM</a><span class="sep">, </span>
+    
+      <a href="/tags/#azure" class="page__taxonomy-item p-category" rel="tag">Azure</a><span class="sep">, </span>
+    
+      <a href="/tags/#dsc" class="page__taxonomy-item p-category" rel="tag">DSC</a><span class="sep">, </span>
+    
+      <a href="/tags/#sql-server" class="page__taxonomy-item p-category" rel="tag">SQL Server</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#blog" class="page__taxonomy-item p-category" rel="tag">blog</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2020-08-16T00:00:20-04:00">August 16, 2020</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Azure+DevOps+for+the+Data+Engineer+Part+2%20http%3A%2F%2Flocalhost%3A4000%2Fblog%2FAzure-DevOps-for-the-Data-Engineer-Part2%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FAzure-DevOps-for-the-Data-Engineer-Part2%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FAzure-DevOps-for-the-Data-Engineer-Part2%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part1/" class="pagination--pager" title="Azure DevOps for the Data Engineer Part 1
+">Previous</a>
+    
+    
+      <a href="/blog/Oracle-Infrastructure-as-Code-in-Azure/" class="pagination--pager" title="Oracle Infrastructure as Code in Azure
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Oracle-Infrastructure-as-Code-in-Azure/" rel="permalink">Oracle Infrastructure as Code in Azure
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part1/" rel="permalink">Azure DevOps for the Data Engineer Part 1
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Moving-Databases-with-TDE/" rel="permalink">Moving Databases with TDE to Azure SQL MI
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Enable-Auditing-AzureSQL/" rel="permalink">Enabling Auditing and Diagnostics on Azure SQL with PowerShell
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Azure Infrastructure as Code. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

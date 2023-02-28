@@ -1,0 +1,649 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Utilizing Key Vault for Automation - Azure Infrastructure as Code</title>
+<meta name="description" content="8/29/2017 12:42:21 PM">
+
+
+  <meta name="author" content="Troy Ault">
+  
+  <meta property="article:author" content="Troy Ault">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure Infrastructure as Code">
+<meta property="og:title" content="Utilizing Key Vault for Automation">
+<meta property="og:url" content="http://localhost:4000/blog/Utilizing-Key-Vault-Automation/">
+
+
+  <meta property="og:description" content="8/29/2017 12:42:21 PM">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2017-08-29T00:00:20-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/Utilizing-Key-Vault-Automation/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Azure Infrastructure as Code Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Azure Infrastructure as Code
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/MyPortfolioimage.png" alt="Troy Ault" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Troy Ault</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Automation one day at a time!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://troyault.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">troyault.com</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/aultt" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Utilizing Key Vault for Automation">
+    <meta itemprop="description" content="8/29/2017 12:42:21 PM">
+    <meta itemprop="datePublished" content="2017-08-29T00:00:20-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/blog/Utilizing-Key-Vault-Automation/" class="u-url" itemprop="url">Utilizing Key Vault for Automation
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>8/29/2017 12:42:21 PM</p>
+
+<p>Working with PowerShell I often find myself doing demos which require me to have some form of credentials or other sensitive data.  In the past I’ve used really generic passwords which are easy to work with but always leave a bad taste in your mouth because the passwords are stored in plain text.  Azure has a very nice service called Key Vault which is a great solution to this problem.  To demonstrate I put together a simple script to build a credential and then utilize the credential to login into a virtual machine which is hosted in Azure.</p>
+
+<h1 id="prerequisites">Prerequisites</h1>
+<p>Prior to running this script you will need to have setup a way to automatically login to Azure, if you have not done this please read my previous log post <a href="https://learn.microsoft.com/en-us/archive/blogs/troy_aults_blog/loginazurewithoutprompt">here</a> first.</p>
+
+<p>Next we will need a function called <a href="https://www.powershellgallery.com/packages/Connect-Mstsc/1.2.5">Connect-Mstsc</a> which is available on the PowerShell Gallery.</p>
+
+<h1 id="creating-the-key-vault">Creating The Key Vault</h1>
+<p>First thing we need to do is setup Key Vault in our subscription.  You have a couple options we can do it online through the online through the portal or in PowerShell.  Since I lend to automation I will demonstrate PowerShell.  Below is an example script to setup your first Key Vault.  We will want to run the setup under our personal account so we have the ability to also add/update/delete to the Key Vault in the web.  For instance adding in new keys we will do online because its a onetime task and we don’t want our secrets in plain text.  So to enable this when setting up the Key Vault we will utilize Login-AzureRMAccount.  We capture the output into the variable $login so we can extract our accountid and grant ourselves all permissions to the secrets.  In addition we need to provide a couple of details to create.  We need to provide a name for the Key Vault, a resource group, and if we want to automate with PowerShell, we will also need to provide our Service Principal so we can grant it privileges.
+$login = Login-AzureRmAccount</p>
+
+<p>$KeyVaultName = ‘MyKeyVault100’
+$ResourceGroup = “$($KeyVaultName)RG”
+$location = ‘EastUS2’
+$ServicePrincipal = ‘http://ManageInternalAzureApp’
+$UserPrincipal = $login.Context.Account.id</p>
+
+<p>New-AzureRmResourceGroup -Name $ResourceGroup -Location $location
+New-AzureRmKeyVault -VaultName $KeyVaultName -ResourceGroupName $ResourceGroup -Location $location
+Set-AzureRmKeyVaultAccessPolicy -VaultName $KeyVaultName -ServicePrincipalName $ServicePrincipal -PermissionsToSecrets get
+Set-AzureRmKeyVaultAccessPolicy -VaultName $KeyVaultName -userPrincipalName $UserPrincipal -PermissionsToSecrets all</p>
+
+<p>As you see above this script will create a new Resource Group, Key Vault and then grant privileges to the Key Vault.  For this demo it is granting my automation ServicePrincipal get only privileges.  Therefore utilizing my automation I will not be able to update or delete the secrets.  My credentials I logged in to create the Key Vault will have all permissions on Secrets which will give me the ability to add new/update/delete secrets from the portal.</p>
+
+<p>After running the script we now have a Key Vault and we need to go put some secrets in to retrieve.  Now browse to ResourceGroups&gt;MyKeyVault100RG&gt;MyKeyVault100.  Here we will see /assets (Keys, Secrets) and Monitoring (Access Policies).  First if we look at Access Policies we will see our application and user which we granted get and all privileges to above.  Next we will go to Secrets.  Here we want to click + Add change our upload options to Manual and fill in the required fields.  We will do this for both the AdminUser and AdminPass.</p>
+
+<h1 id="accessing-key-vault">Accessing Key Vault</h1>
+<p>We are now ready to consume our secrets!!  We can make calls out to KeyVault and build a credential.  Below is some sample code showing this.</p>
+
+<p>Login-AzurebyCert
+$AdminUserName = ‘AdminUser’
+$AdminPassName = ‘AdminPass’
+$AdminUser = Get-AzureKeyVaultSecret -VaultName $KeyVaultName -Name $AdminUserName
+$AdminPass = Get-AzureKeyVaultSecret -VaultName $KeyVaultName -Name $AdminPassName
+$mycred = New-Object System.Management.Automation.PSCredential (“$($AdminUser.SecretValueText)”, $AdminPass.SecretValue)</p>
+
+<p>First we leverage Login-AzurebyCert which is explained in earlier post.  We define which secrets we want to retrieve in this case AdminUser and AdminPass.  We retrieve the values for these then build a credential from them.  After we run the above script if we take a look at $mycred we will see we now have a PSCredential.</p>
+
+<p>I can now leverage this credential to pass to any other PowerShell cmdlet which takes a credential as an input.  For my example here I am going to pass it to a PowerShell function I referenced earlier Connect-Mstsc which will allow me to RDP into a windows machine.  This machine could be local in azure or any where for that matter.  I will be automatically logged in without having the need to know or pass credentials.  Below is the actual call.</p>
+
+<p>Connect-Mstsc -ComputerName 192.168.10.1:3389 -Credential $mycred</p>
+
+<p>Having the ability to store secrets helps aid in cleaning up our automation/demo scripts to ensure we are being good stewards of our sensitive data.</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#azure" class="page__taxonomy-item p-category" rel="tag">Azure</a><span class="sep">, </span>
+    
+      <a href="/tags/#key-vault" class="page__taxonomy-item p-category" rel="tag">Key Vault</a><span class="sep">, </span>
+    
+      <a href="/tags/#powershell" class="page__taxonomy-item p-category" rel="tag">Powershell</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#blog" class="page__taxonomy-item p-category" rel="tag">blog</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2017-08-29T00:00:20-04:00">August 29, 2017</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Utilizing+Key+Vault+for+Automation%20http%3A%2F%2Flocalhost%3A4000%2Fblog%2FUtilizing-Key-Vault-Automation%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FUtilizing-Key-Vault-Automation%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FUtilizing-Key-Vault-Automation%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/Automation-Securely-Script-Login/" class="pagination--pager" title="Automation with Azure? How to securely script login?
+">Previous</a>
+    
+    
+      <a href="/blog/LabinaBox-Onprem-or-Cloud/" class="pagination--pager" title="Enabling Auditing and Diagnostics on Azure SQL with PowerShell
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Oracle-Infrastructure-as-Code-in-Azure/" rel="permalink">Oracle Infrastructure as Code in Azure
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part2/" rel="permalink">Azure DevOps for the Data Engineer Part 2
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part1/" rel="permalink">Azure DevOps for the Data Engineer Part 1
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Moving-Databases-with-TDE/" rel="permalink">Moving Databases with TDE to Azure SQL MI
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Azure Infrastructure as Code. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

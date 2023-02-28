@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-02-27T17:12:33-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Azure Infrastructure as Code</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>Troy Ault</name></author><entry><title type="html">Oracle Infrastructure as Code in Azure</title><link href="http://localhost:4000/blog/Oracle-Infrastructure-as-Code-in-Azure/" rel="alternate" type="text/html" title="Oracle Infrastructure as Code in Azure" /><published>2021-07-07T00:00:20-04:00</published><updated>2021-07-07T00:00:20-04:00</updated><id>http://localhost:4000/blog/Oracle-Infrastructure-as-Code-in-Azure</id><content type="html" xml:base="http://localhost:4000/blog/Oracle-Infrastructure-as-Code-in-Azure/">&lt;p&gt;&lt;img src=&quot;/assets/images/oraclePostImage.jpeg&quot; alt=&quot;Architecture Diagram1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;7/7/2021&lt;/p&gt;
+
+&lt;p&gt;Are you looking to move Oracle workloads to Azure? Want to establish an Oracle development environment in Azure? Before getting started, I suggest you check out the following &lt;a href=&quot;https://www.youtube.com/watch?v=yoNZ_H2zOqk&quot;&gt;video&lt;/a&gt;. After watching the video, you will have a good understanding of all the things to consider when moving Oracle workloads to Azure.&lt;/p&gt;
+
+&lt;h2 id=&quot;infrastructure-as-code&quot;&gt;Infrastructure as Code&lt;/h2&gt;
+&lt;p&gt;Next, let’s discuss the tools we leverage for building out your first Oracle deployment. Terraform will deploy the infrastructure required while Ansible will be responsible for configuration of the virtual machine.&lt;/p&gt;
+
+&lt;h2 id=&quot;architecture&quot;&gt;Architecture&lt;/h2&gt;
+&lt;p&gt;To isolate our environment the solution will deploy without any public endpoints. Since this is a stand along environment a new vnet is deployed which consists of three subnets. One subnet is leveraged for the virtual machine, another is leveraged key vault, and the final is utilized by Bastion. Key Vault will whitelist the public ip address of your machine to ensure you can connect after the deployment. See Architectural diagram below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/OracleArchImage.png&quot; alt=&quot;Architecture Diagram&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;problem-statement&quot;&gt;Problem Statement&lt;/h2&gt;
+&lt;p&gt;Before we dig into the specifics, let’s address the problem we are trying to solve. Today customers looking to move their Oracle workloads to Azure but don’ know where to start. Installing Oracle is a time consuming task. Often there are limited number of engineers with the background required to implement. Azure adds new VM sku’s regularly. As they are added we want to run stress tests with different size and number of disks to determine how they will perform. Automating the oracle deployment allows us to reduce time to deploy and provide a tool which could automatically test/validate a VM and disk configuration.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images//TeraformFlow.png&quot; alt=&quot;Teraform Flow&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;approach&quot;&gt;Approach&lt;/h2&gt;
+&lt;p&gt;Let’s walk through my approach on solving the problem. Leveraging Terraform for the infrastructure portion allows us to provide variables and allow the deployment to be easily customized. As a result you have the capability to configure the vm size, number of disks, size of disks, and caching. Terraform allows us to define a variable file which allows a you to pass and quickly deploy a POC environment. Below is a simple flow diagram for the Terraform code.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images//Ansible-Flow.png&quot; alt=&quot;Ansible Flow&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once the terraform deployment has finished, you will need to complete one step. While this could be automated in the future or handled in a pipeline today, you need to kick off the script. First log into the VM with the Bastion Service, and the Key, which is stored in Key Vault. Next do an ls at the command prompt. Two files should exist, an ansible yml file which is the playbook, and a shell script which will deploy the playbook. Execute the playbook by typing . ./deployoracle.sh. The script should complete in approximately fifteen minutes. Once complete, the Oracle database will be configured with ASM and all the variables you defined. Below you will find a process flow of the Ansible Playbook.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Not alot has changed with the installation process since my last interaction with Oracle back in the 90’s. However, there are multiple steps and it’s easy to miss a step. Now that it is documented, hopefully my work will save you and others time and frustration. You can find the GitHub solution with the documentation and supporting files &lt;a href=&quot;https://github.com/aultt/azure-oracle/tree/master/OraAzure-Terraform/Oracle_Single&quot;&gt;here&lt;/a&gt;. As you look through the project if you have ideas for improvement please open an issue in GitHub. Thanks for reading and happy automating.&lt;/p&gt;</content><author><name>Troy Ault</name></author><category term="blog" /><category term="Azure" /><category term="ARM" /><category term="Oracle" /><category term="Ansible" /><summary type="html"></summary></entry><entry><title type="html">Azure DevOps for the Data Engineer Part 2</title><link href="http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part2/" rel="alternate" type="text/html" title="Azure DevOps for the Data Engineer Part 2" /><published>2020-08-16T00:00:20-04:00</published><updated>2020-08-16T00:00:20-04:00</updated><id>http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part2</id><content type="html" xml:base="http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part2/">&lt;p&gt;&lt;img src=&quot;/assets/images/DevOpsPart2Image0.png&quot; alt=&quot;image0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;8/16/2020&lt;/p&gt;
+
+&lt;p&gt;Welcome back as we continue from our previous discussion, where we discussed deploying a domain controller in Azure with ARM and DevOps. If you missed it, read the previous blog post. Here we will leverage two more ARM templates which I have published to my GitHub account. The first one is &lt;a href=&quot;https://github.com/aultt/DeveloperWorkstation&quot;&gt;DeveloperWorkstation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;**Note to keep this post from becoming too long I will not cover creating the CI pipeline for the workstation and SQL Server. Please loop back to the previous post and follow the same steps.&lt;/p&gt;
+
+&lt;h3 id=&quot;developer-workstation&quot;&gt;Developer Workstation&lt;/h3&gt;
+&lt;p&gt;This ARM template will create a virtual machine, place the machine in our domain which we created previously, set the time zone, and finally install all our development tools we will want to leverage in our lab. Currently, the DSC configuration script installs the following components:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Azure Data Studio&lt;/li&gt;
+  &lt;li&gt;Plugins for Azure Data Studio for PowerShell and SQL Server admin&lt;/li&gt;
+  &lt;li&gt;AZcopy&lt;/li&gt;
+  &lt;li&gt;SQL Server Management Studio&lt;/li&gt;
+  &lt;li&gt;VSCode&lt;/li&gt;
+  &lt;li&gt;Plugins for VSCode for SQL Server and PowerShell&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Installation of the tools is done leveraging the DSC module for Chocolatey. Therefore, adding additional tools is simple.&lt;/p&gt;
+
+&lt;p&gt;We will need to update our azuredeploy.parameters.json file as we did earlier for our domain template. Below is the minimal values you should update.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/devopspart2image1.png&quot; alt=&quot;Image1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Number 2 is optional as you could leave your domain DemoLab.local, but you may want to change to something more relevant. Update these values, save the files off and commit to your personal repo.&lt;/p&gt;
+
+&lt;h3 id=&quot;sql-server-stand-alone&quot;&gt;SQL Server Stand Alone&lt;/h3&gt;
+&lt;p&gt;Next, we will walk through our SQL Server ARM template which can be found in my GitHub and named &lt;a href=&quot;https://github.com/aultt/SQLServerSingle&quot;&gt;SqlServerSingle&lt;/a&gt;. If you have utilized any of my SQL Server templates in the past then you will find this familiar. There are a few minor changes which I have done. Looking through the DSC configuration script, you will find the template supports SQL Server from SQL 2016 through SQL 2019. Like our developer workstation the configuration will place our SQL Server in our domain, set our time zone, install SQL Server, set all best practices, and create an SPN for SQL Server. Wait did you say SPN? Yes, once this is all put together, we will have a fully functional lab environment which leverages Kerberos authentication. Now that we understand what our configuration will do, let’s look at the changes we need to make to our parameters file.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/DevOpsPart2Image2.png&quot; alt=&quot;Image2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As before, number 3 is optional as this is the domain name. In this template there is one additional change which is needed as we now have a SQL Service account that we need to retrieve a password for. You can now save and publish all your code to your repo as we move to the final piece, the DevOps pipeline.&lt;/p&gt;
+
+&lt;h3 id=&quot;devops-pipeline&quot;&gt;DevOps Pipeline&lt;/h3&gt;
+&lt;p&gt;Finally, we have all the pieces together to build our first pipeline which will deploy a fully function lab environment. I decided to separate the DevOps pipelines out to their own repo, so head over to my GitHub and download &lt;a href=&quot;https://github.com/aultt/DevOpsSQLLab&quot;&gt;DevOpsSQLLab&lt;/a&gt;. Once you have forked the repo, open the azure-pipelines.yml file which is under the SQLServerSingeLab folder. You may ask why a folder? I will be adding additional pipelines here going forward as customers request or I find the need. Open the file in VSCode, notice unlike our last yml file we now have a stage line within our file. This allows us to set dependencies on one stage completing before another one starts. We are going to break this file into three sections. First section is stage DC.&lt;/p&gt;
+
+&lt;h3 id=&quot;domain-controller-stage&quot;&gt;Domain Controller Stage&lt;/h3&gt;
+&lt;p&gt;You have options when editing this file, you can edit it directly in Visual Studio code if you like, however, you will have to know the project id and number which isn’t easy to determine. My preference is to open the file up within my DevOps pipeline and edit it directly in the pipline. Take a look below at the screenshot and I will explain why.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/devopspart2image3.png&quot; alt=&quot;Image3&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see above, we have three sections under DC which should look similar to what we saw in our domain controller pipeline. Above each is a Settings title which shows up in our pipeline. If you click this, then DevOps will present a fly out to the right with drop downs for you to select the Project and Build Pipeline. Here you will select your DevOps Pipeline along with your Build pipelines associated with your domain controller. Once complete, click add and this will be added back to your YAML file.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/devopspart2image4.png&quot; alt=&quot;Image4&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Continue to the next two items and modify the tasks as you did for the domain controller release pipeline previously. Once complete with each, click add and save back to the YAML file.&lt;/p&gt;
+
+&lt;h3 id=&quot;workstation-stage&quot;&gt;Workstation Stage&lt;/h3&gt;
+&lt;p&gt;Next stage is workstation. Walk through and make the same changes as you did above clicking add each time you complete a task. There is something additional to note here. Since we are leveraging stages, we can now set dependencies. As depicted in the diagram below, we set a dependency on domain controller as we cannot add the machine to the domain if the domain does not exist.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/devopspart2image5.png&quot; alt=&quot;Image5&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;sql-server-stage&quot;&gt;SQL Server Stage&lt;/h3&gt;
+&lt;p&gt;Finally, we are to our SQL Server stage. Follow the same process we have for the last two sections. Once complete, save your pipeline, give it a name, and run the pipeline.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/devopspart2image6.png&quot; alt=&quot;Image6&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After you run the pipeline you will get a graphical presentation of each stage of the pipeline. Below I show the pipeline once it has completed. Notice we get times for each stage of the pipeline, so we know how long each ran. Also take note workstation and SQL will not begin until DC has completed.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/devopspart2image7.png&quot; alt=&quot;Image7&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;wrapping-up&quot;&gt;Wrapping Up&lt;/h3&gt;
+&lt;p&gt;We now should have a fully functional lab environment for SQL Server. We can test any SQL Server functionality including Kerberos authentication. More importantly with our DevOps pipeline, we now have a YAML file we can work with to build even more complicated pipelines which have additional dependencies. For instance, think of multiregional environments where different components have dependencies on another resource. The possibilities are endless. Hopefully, you have found this exercise beneficial as always if you have questions add a comment or send me an email.&lt;/p&gt;</content><author><name>Troy Ault</name></author><category term="blog" /><category term="Azure" /><category term="ARM" /><category term="DSC" /><category term="SQL Server" /><summary type="html"></summary></entry><entry><title type="html">Azure DevOps for the Data Engineer Part 1</title><link href="http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part1/" rel="alternate" type="text/html" title="Azure DevOps for the Data Engineer Part 1" /><published>2020-08-10T00:00:20-04:00</published><updated>2020-08-10T00:00:20-04:00</updated><id>http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part1</id><content type="html" xml:base="http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part1/">&lt;p&gt;&lt;img src=&quot;/assets/images/DevOpsPart1Image0.png&quot; alt=&quot;image0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;8/10/2020&lt;/p&gt;
+
+&lt;p&gt;Working with customers, I often need to spin up environments to demo/test/validate different scenarios. In the past I have kept a Hyper-V lab which housed all the different versions of SQL. This became a management overhead to ensure they were up to date. In addition, the number of releases and the supported platforms continued to increase. Customers also are looking to move their data workloads to Azure and therefore are looking at ways to automate. In the past I developed ARM templates for most of the SQL Server scenarios to aid in this. Testing was painful and caused for these templates to become outdated over time. The answer is to put them into a pipeline to ensure there are not steps missed in the deployment. Unfortunately, I was unable to find documentation on how to implement an ARM template within an Azure DevOps pipeline.&lt;/p&gt;
+
+&lt;p&gt;Therefore, I have worked through the process and would like to document for others and myself to reference later. My approach was to develop ARM templates which could be leveraged like Lego pieces to build out several different pipelines. The two pieces which will be used for all my SQL deployments are domain controller and workstation. For this post I will walk through the domain controller template, talk to what changes you will need to make, and show how you can build a simple DevOps pipeline to deploy it.&lt;/p&gt;
+
+&lt;h2 id=&quot;setup-dependencies&quot;&gt;Setup Dependencies&lt;/h2&gt;
+&lt;p&gt;Let’s get started. First thing you will want to do is to fork the &lt;a href=&quot;https://github.com/aultt/DomainController&quot;&gt;DomainController&lt;/a&gt; repository. You will need to update a couple of the files before you are ready to deploy, however, first let’s walk through things you will need to have deployed in your Azure subscription before making file changes. You will want to deploy/verify each of the following, storage account, key vault, virtual network, before moving on to modifying files. Within your key vault you will want to create two Secrets, one for the domain admin password and one for the local admin password.&lt;/p&gt;
+
+&lt;p&gt;Now that our prerequisites are complete let’s open the GitHub repository we downloaded and see what is included. After you have downloaded it, open the folder in Visual Studio Code. You will find the files which are shown in the picture below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/DevOpsPart1image1.png&quot; alt=&quot;image1&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;dsc-configuration-changes&quot;&gt;DSC Configuration changes&lt;/h2&gt;
+&lt;p&gt;First item on the list is the DSC folder. Within the folder we will find all the DSC modules we will leverage to build out our domain controller (DC) and DSC configuration file. If you aren’t familiar with Desired State Configuration (DSC) check out my earlier posts which walk through it in more detail. For this post we will walk through how to modify files to deploy your DC but won’t walk through how DSC does the work. Within the DSC folder the only file you will want to update is the Domain.ps1 file. Within this file there are users who are created for our environment.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/DevOpsPart1Image2.png&quot; alt=&quot;image2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Above are the five items you may want to change, three domain users and a domain group. Two of the user accounts are for our SQL Server SQLSvc and SQLAgt. If you want these to be different just place the name you would like them to use instead. Third user is the user I leveraged for development and was added to the DBA group which is the fourth and fifth item to change.&lt;/p&gt;
+
+&lt;h2 id=&quot;azure-resource-manager-template&quot;&gt;Azure Resource Manager Template&lt;/h2&gt;
+&lt;h3 id=&quot;modify-arm-template&quot;&gt;Modify ARM template&lt;/h3&gt;
+&lt;p&gt;We now are ready to look at our ARM template and parameters file. Open up azuredeploy.json in Visual Studio Code. We have one line we need to update here, line 101 which is our artifacts location. Replace &lt;YOUR_STORAGE_ACCOUNT_NAME&gt; with your storage account name. Within in your storage account you will need to have a container created, in my case I created one called artifact. If you name your container differently please update it here as well.&lt;/YOUR_STORAGE_ACCOUNT_NAME&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;modify-arm-parameter-file&quot;&gt;Modify ARM Parameter File&lt;/h3&gt;
+&lt;p&gt;Next lets open azuredeploy.parameters.json. This file holds all our parameters which are passed to our ARM template we just modified. You should review each parameter here but at a minimum you will need to update line 17, 31, 37, 40 46 and 49. Below each is described:&lt;/p&gt;
+
+&lt;p&gt;17 &amp;amp; 31 – Provide your subscription id, the resource group name where your key vault resides and your key vault name. Additionally, if you did not create your secret names as DomainAdmin and localadminPass update these to the corresponding secret name.&lt;/p&gt;
+
+&lt;p&gt;37 – Enter the resource group name where your virtual network resides.&lt;/p&gt;
+
+&lt;p&gt;40 – Enter your Vnet Name&lt;/p&gt;
+
+&lt;p&gt;46 – Enter your Subnet Name&lt;/p&gt;
+
+&lt;p&gt;49 – Replace &lt;YOUR_STORAGE_ACCOUNT_NAME&gt; with your storage account name and if your container is not artifact please update to the corresponding container name. _artifactsLocationSasToken on line 51 should not be modified.&lt;/YOUR_STORAGE_ACCOUNT_NAME&gt;&lt;/p&gt;
+
+&lt;p&gt;Aside from line 51, all other parameters can be modified to fit your needs. Line 51 is for SaS Token which we dynamically build and should not be modified.&lt;/p&gt;
+
+&lt;p&gt;We have now modified all the files needed to call our template from a DevOps pipeline. Three additional files reside in our repository we haven’t yet discussed, DomainDeploy.ps1, azure-pipelines.yml, and azure-pipelines-release.yml.&lt;/p&gt;
+
+&lt;h3 id=&quot;modify-manual-deployment-script&quot;&gt;Modify Manual Deployment Script&lt;/h3&gt;
+&lt;p&gt;DomainDeploy.ps1 can be leveraged to manually deploy your ARM template. This is often how I run the first couple of times to validate the DSC configuration. If you want to leverage this, you will want to look at the first four lines. $resourceGroupName and $resourceGroupLocation is the name of the resource group where the virtual machine and corresponding resources will be created. $templateFile and $templateParm should point to where you forked your repro locally.&lt;/p&gt;
+
+&lt;h2 id=&quot;azure-devops-pipeline&quot;&gt;Azure DevOps Pipeline&lt;/h2&gt;
+&lt;p&gt;azure-pipelines.yml defines our Azure DevOps pipeline. We will walk through modifying this in your environment. Before modifying the file, we first need to have a DevOps project. If you don’t have an existing one create a new project. Next click Pipelines.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/DevOpsPart1Image3.png&quot; alt=&quot;image3&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then click New Pipeline. You will be presented a screen like below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/DevOpsPart1Image4.png&quot; alt=&quot;image4&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Your code needs to be associated with a repository to leverage DevOps, you can leverage an Azure Repos or one of the others listed above. Once you select your provider, you will be presented with your repos and will select the repo you are attaching this pipeline to.&lt;/p&gt;
+
+&lt;h2 id=&quot;continuous-integration-pipeline&quot;&gt;Continuous Integration Pipeline&lt;/h2&gt;
+&lt;p&gt;After selecting the repo select existing Azure Pipelines YAML File and select azure-pipelines.yml. You will be presented with the following view:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/DevOpsPart1Image5.png&quot; alt=&quot;image5&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Notice there are items which will need to be update below the red arrow. To update these, click the Settings where the error is pointing. An additional window will be displayed on the right for you to select these values as shown below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/DevOpsPart1Image6.png&quot; alt=&quot;image6&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Select your Azure Subscription, Storage account and container name and click Add. Your CI pipeline is now ready to save and run. So, what did we just accomplish? Let’s walk through our CI pipeline. The first item in the file is trigger, notice it has a value of master, any time the master branch is updated Azure DevOps will kick off the pipeline and do the steps listed here. The remainder of the steps zip all the DSC modules and configuration script in a zip file, publish the artifacts to a container and then copy the zip file to our azure storage account so our ARM template can reference it. ARM templates which reference external files must be stored in some form of external storage today. Now that our CI pipeline is built, anytime we add a DSC module or update our DSC configuration the pipeline will zip them all and copy them to our storage account automatically.&lt;/p&gt;
+
+&lt;h2 id=&quot;release-pipeline&quot;&gt;Release Pipeline&lt;/h2&gt;
+&lt;p&gt;The final script is azure-pipelines-release.yml which is our release pipeline. We will leverage this any time we want to deploy our pipeline, which in this case is our domain controller. Eventually we will have a release pipeline which deploys all the servers for our environment. Let’s look at our final file. As before, create a new pipeline, select your repository, select your repo, and then select azure-pipelines-release.yml. The diagram below depicts the file and the things you will need to modify.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/DevOpsPart1Image7.png&quot; alt=&quot;image7&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;First you will want to Click Settings above line 8 marked number 1. This will allow you to select the appropriate Project which will populate the project ID. Once your project is selected you can select the Build Pipeline which we created earlier, and the pipeline ID will be populated for you. Once complete click Add. **Task pulls artifacts local to build server.&lt;/p&gt;
+
+&lt;p&gt;Next select Settings above line 17 marked number 4. This again will pull up another window for you to allow you to select the subscription the script will run against. After you select your subscription modify the inline script replacing the storage account name with your storage account name. Once complete click Add. **Task is a PowerShell task which will get a SASToken for our storage account, which allows DevOps to pass the token to the ARM template which is called next.&lt;/p&gt;
+
+&lt;p&gt;Finally select Settings above line 28 marked number 7. Once this is pulled up select the Azure Resource Manager connection and the subscription. Once complete go to the Override template parameters and modify the VMName and Domain Name to match what you would like. Override parameters allow you to override anything which is provided in the azuredeploy.parameters.json file. Once complete click Add. **Task calls our ARM template and passes overrides and SAS token to kick off our deployment.&lt;/p&gt;
+
+&lt;h2 id=&quot;deploy-pipeline&quot;&gt;Deploy Pipeline&lt;/h2&gt;
+&lt;p&gt;You can now Save and Run your DevOps pipeline. Once you run it will show the Status and Duration as below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/DevOpsPart1Image8.png&quot; alt=&quot;image8&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You have now successfully deployed a domain controller with a DevOps Pipeline. In my next Blog Post we will incorporate the workstation and SQL server with a Pipeline to put them all together.&lt;/p&gt;</content><author><name>Troy Ault</name></author><category term="blog" /><category term="Azure" /><category term="ARM" /><category term="DSC" /><category term="SQL Server" /><summary type="html"></summary></entry><entry><title type="html">Moving Databases with TDE to Azure SQL MI</title><link href="http://localhost:4000/blog/Moving-Databases-with-TDE/" rel="alternate" type="text/html" title="Moving Databases with TDE to Azure SQL MI" /><published>2020-01-19T05:41:20-05:00</published><updated>2020-01-19T05:41:20-05:00</updated><id>http://localhost:4000/blog/Moving-Databases-with-TDE</id><content type="html" xml:base="http://localhost:4000/blog/Moving-Databases-with-TDE/">&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage0.png&quot; alt=&quot;image0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;1/19/2020&lt;/p&gt;
+
+&lt;p&gt;Many customers are long on their journey to Azure, while some are just beginning. As customers begin to look at migrating databases, security is typically the first discussion point. By default, Azure SQL encrypts data at rest and in transit. Azure does this utilizing a system managed key, however, you may also bring your own key (BYOK) if you would like too.&lt;/p&gt;
+
+&lt;p&gt;In this blog post I am going to discuss moving a database to Azure SQL Managed instance which is currently leveraging transparent data encryption (TDE). There are three options of how this can be implemented. The first is to configure your Managed Instance (MI) to utilize a customer-managed key. Reference documentation can be found &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/azure-sql/database/transparent-data-encryption-byok-overview?view=azuresql&quot;&gt;here&lt;/a&gt;. The second is to just restore your database to MI and allow MI to manage the encryption key. Reference documentation can be found &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/tde-certificate-migrate?tabs=azure-powershell&amp;amp;view=azuresql&quot;&gt;here&lt;/a&gt;. The third is to leverage a managed service, Data Migration Service (DMS), which will restore the database and migrate the certificate for you. Reference documentation can be found &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/dms/tutorial-sql-server-to-managed-instance#configure-migration-settings&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;For this blog post I will focus on option two as the scenario I am looking to fulfill is one where is customer is refreshing a database in Azure on a schedule. DMS is targeted as a tool to migrate the application to Azure, however, in this case we are doing continual testing and want to leverage updated database backups from on-prem. Therefore, for this post we will walk through how to move the certificate to Managed Instance as well as walk through how you can automate the database restores.&lt;/p&gt;
+
+&lt;p&gt;First step we will need to do is setup a database and enable TDE. To do this I referenced Microsoft documentation which can be found &lt;a href=&quot;https://learn.microsoft.com/en-us/sql/relational-databases/security/encryption/transparent-data-encryption?view=sql-server-ver15&quot;&gt;here&lt;/a&gt;. As this is documented well, I will just provide my &lt;a href=&quot;https://github.com/aultt/ProofOfConcepts/blob/master/SQLDatabaseRefreshtoSQLMI/EnableTDEandbackupcert.sql&quot;&gt;script&lt;/a&gt; as reference. If this is unclear please comment and I will provide additional details.&lt;/p&gt;
+
+&lt;p&gt;We now have a functioning TDE database on our server and can begin the process of exporting the certificate. If you are attempting to migrate a certificate from an existing database you may get an error and discover that your certificate is expired. While this does not prevent TDE from functioning, it will require you update the certificate to a valid certificate before you can export. This task is relatively easy. First you must create a new certificate. Command below is an example.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage1.png&quot; alt=&quot;image1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once the certificate is created, if this is a stand alone SQL Server, then all we need to do is rotate the certificate in. We can do this with an alter database command as shown below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage2.png&quot; alt=&quot;image2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, we can validate our database is leveraging the correct certificate with the following command.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage3.png&quot; alt=&quot;image3&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;What if we were leveraging Always On Availability Groups and our database was participating? Do we need to suspend data movement? Do we need to un-encrypt the database? Luckily, the answer is no. All we need to do is create the certificate on the primary, export the certificate, and then create the certificate on each secondary. An example of creating the certificate from a file is listed below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage4.png&quot; alt=&quot;image4&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After the certificate has been created on all nodes, the alter command can be run from the primary followed by the validation query on each server. If by chance the alter command is run before the certificate has been created on each secondary, all is not lost. You will, however, need to resume data movement once the certificate has been created.&lt;/p&gt;
+
+&lt;p&gt;Now we have a TDE database which has a valid cert and we can begin the process of exporting it and migrating it to Azure SQL Managed Instance. Before we can move forward with the script to do this, we will want to validate that we have a few tools installed on our machine. Two PowerShell cmdlets are required, Az.keyvault and Az.Sql.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage5.png&quot; alt=&quot;image5&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see above the script will throw an error if they don’t exist, however, the command to install them is also provided. Installing them will require you run PowerShell as an admin. The next tool required is pvk2pfx.exe. This command line tool is provided as part of the Windows 10 SDK. It maybe confusing on how to install this, therefore, I am providing additional information. First, it requires you have Visual Studio installed. If you don’t currently have it installed, then you will wan to go download it first. You can download here. Once Visual Studio is installed, you will want to launch Visual Studio Installer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage6.png&quot; alt=&quot;image6&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once you are in the installer, you will click Modify next to the Visual Studio you have installed.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage7.png&quot; alt=&quot;image7&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once it has launched, you will want to select Individual components and the enable the check box next to Windows 10 SDK as depicted below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage8.png&quot; alt=&quot;image8&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once this has been completed, you have all the tools required to run the script to export and upload the certificate.&lt;/p&gt;
+
+&lt;p&gt;Let’s take a closer look at the PowerShell script we will leverage for this. First section of the script are variables we will want to set for our environment followed but some system generated variables based our environment. Each are described below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage9.png&quot; alt=&quot;image9&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;$certPath : location where we will export our certificate too.
+$certName : Name which will be used for the certificate
+$miResourceGroup : Resource Group your managed instance lives in
+$miConnection : Name of your Managed Instance
+$certPasswordSecret : Secret Name for your sa password which is stored in KeyVault
+$keyVaultName : KeyVault name where secrets are stored
+$certCerPath : Full path to exported certificate with .cer extension
+$certPvkPath : Full path to exported certificate with .pvk extension
+$certPfxPath : Full path to exported certificate with .pfx extension&lt;/p&gt;
+
+&lt;p&gt;Notice here we are leveraging KeyVault to store our passwords so we ensure we are not checking in code with passwords into source control. Immediately following the variables is the call to the exe pvk2pfx. This tool will convert the files which we exported as part of setting up TDE to a pfx file, managed instance requires this format. The final step of the script converts the certificate to a base 64 encoded certificate and uploads it to managed instance. We now have our certificate successfully loaded into managed instance. How do we leverage it?&lt;/p&gt;
+
+&lt;p&gt;Essentially from here we can restore any database which is utilizing this certificate for TDE onto managed instance with a normal restore command. Since the certificate exists within SQL Server it can decrypt the backup file and restore the database. When doing the restore MI will leverage the key which it has assigned for TDE for encryption. Therefore, you can be leveraging either BYOK or system managed key and MI will restore the database and leverage this certificate. MI allows for multiple certificates to be uploaded which ensures you can restore TDE databases from different servers or even the same server when it is leveraging a different certificate.&lt;/p&gt;
+
+&lt;p&gt;Finally, I mentioned earlier I would provide a way to automate the restore of the database(s) with PowerShell. Luckily this is relatively easy thanks to the community driven cmdlets at http://dbatools.io. This script will also require the use of some additional tools.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage10.png&quot; alt=&quot;image10&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;First couple requirements are PowerShell modules. As before, the script will validate they are installed and if not throw an error. The last tool required is AZCopy. AZCopy is leveraged to copy the backup files to Azure storage. There are several versions of the tool for this script I leveraged version 8.1. Next you will need to provide some environment details. Variables are listed below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage11.png&quot; alt=&quot;image11&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we will loop through the databases provided and Backup each one at a time. For clarification this backup command is setup to create a backup file once a day. If it is run more than once it will overwrite the existing file for that day. You may want to customize the backup and restore portion. If you do, then you can leverage the following command to get details Get-Help Backup-Dbadatabase -full&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage12.png&quot; alt=&quot;image12&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Following the backup, we leverage AZCopy to move the backup files to Azure storage. And finally we loop through each of the backup files and restore to Managed Instance.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/movingdbimage13.png&quot; alt=&quot;image13&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Notice we don’t need to provide any additional information for the certificate because we have already imported it to Managed Instance. We now have a script which can be scheduled to run on a regular interval to refresh one or more databases. All the scripts referenced here can be found in my GitHub location which can be found at &lt;a href=&quot;https://github.com/aultt/ProofOfConcepts/tree/master/SQLDatabaseRefreshtoSQLMI&quot;&gt;here&lt;/a&gt;. Please let me know if there are questions or if anything needs further clarification.&lt;/p&gt;</content><author><name>Troy Ault</name></author><category term="blog" /><category term="Azure" /><category term="SQL" /><category term="Migration" /><summary type="html"></summary></entry><entry><title type="html">Enabling Auditing and Diagnostics on Azure SQL with PowerShell</title><link href="http://localhost:4000/blog/Enable-Auditing-AzureSQL/" rel="alternate" type="text/html" title="Enabling Auditing and Diagnostics on Azure SQL with PowerShell" /><published>2019-10-31T00:00:20-04:00</published><updated>2019-10-31T00:00:20-04:00</updated><id>http://localhost:4000/blog/Enable-Auditing-AzureSQL</id><content type="html" xml:base="http://localhost:4000/blog/Enable-Auditing-AzureSQL/">&lt;p&gt;&lt;img src=&quot;/assets/images/enableauditimage0.png&quot; alt=&quot;image0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;10/31/2019&lt;/p&gt;
+
+&lt;p&gt;Do you have databases which were created in Azure without auditing or diagnostics turned on? Do you want to ensure all databases always have this enabled? Recently I have had discussions with customers around monitoring Azure SQL databases. Microsoft has a dashboard, Azure SQL Analytics, which gives you information around the performance of your databases. Additional information on Azure SQL Analytics can be found &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/azure-monitor/insights/azure-sql&quot;&gt;here&lt;/a&gt;. Before you can begin viewing things in the dashboard though, you will need to enable diagnostics for collection. Microsoft also documents how this can be done &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/azure-sql/database/metrics-diagnostic-telemetry-logging-streaming-export-configure?view=azuresql&amp;amp;tabs=azure-portal&quot;&gt;here&lt;/a&gt;. In my case, I had several databases across Azure Sql Logical Servers and Azure SQL Managed Instance. Therefore, I wanted a script to enable them all as well as one that could be run on a regular basis to ensure any new databases were also enabled. Unfortunately, the PowerShell command-lets are different for Azure SQL DB and Azure SQL Managed Instance. Therefore, I have created two different scripts and placed them on my GitHub ProofOfConcepts Repo under &lt;a href=&quot;https://github.com/aultt/ProofOfConcepts/tree/master/EnableAuditing&quot;&gt;EnableAuditing&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Currently, both have variables defined at the top of the script which you will need to edit for your environment. After editing these, you are ready to step through the code. There are slight variations between the two scripts and I will call them out. First, we check if Audit is enabled on the server itself. If it is not, then we will enable it and point it to the log analytics workspace configured in the variables.&lt;/p&gt;
+
+&lt;p&gt;Next, we will get all databases associated with the server and loop through each and ensure Auditing is enabled for each. After Auditing is enabled, we will get the diagnostic settings for the database and loop through each category ensuring it is enabled. If it is not enabled, then we will enable the category.&lt;/p&gt;
+
+&lt;p&gt;The largest difference between the two scripts is that I was unable to find a PowerShell module equivalent to Get-AzSqlServerAudit and Set-AzSqlServerAudit for managed instance. Therefore, for managed instance, the script will only enable the audit and diagnostics for all the databases and not for the instance itself. This can, however, be achieved through the portal or through the arm template at creation.&lt;/p&gt;
+
+&lt;p&gt;Once you have run the script, it can be scheduled to run through an Automation run-book on a regular basis to ensure any new databases added are also enabled. As always please provide any feedback or questions.&lt;/p&gt;</content><author><name>Troy Ault</name></author><category term="blog" /><category term="PowerShell" /><category term="Azure" /><category term="SQL Server" /><summary type="html"></summary></entry><entry><title type="html">Managing Azure Data Services Costs through Automation</title><link href="http://localhost:4000/blog/Managing-Azure-Data-Services-Costs/" rel="alternate" type="text/html" title="Managing Azure Data Services Costs through Automation" /><published>2019-10-29T06:41:20-04:00</published><updated>2019-10-29T06:41:20-04:00</updated><id>http://localhost:4000/blog/Managing-Azure-Data-Services-Costs</id><content type="html" xml:base="http://localhost:4000/blog/Managing-Azure-Data-Services-Costs/">&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage0.png&quot; alt=&quot;image0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;10/29/2019&lt;/p&gt;
+
+&lt;p&gt;Cloud computing cost management…  Do you have services which should be running only during a pipeline?  Do you have a lab environment which you want to ensure isn’t running after hours?  There are multiple ways to manage and ensure minimal cost.  My first iterations were leveraging automation accounts.  These work well if you are comfortable writing code and the activity can be scheduled, however, recently I have been working with customers leveraging SQL Data Warehouse, Azure Analysis Server, and Integration Runtime.  These technologies often work as part of a pipeline run, and therefore can be started before and stopped immediately after.  Azure Data Factory (ADF) is often leveraged for moving data between data tiers, so I began my automation journey here.  Within ADF, you can automate almost anything with in Azure utilizing the web task.  Each of these are similar in implementation and all code is provided in my GitHub POC repo under &lt;a href=&quot;https://github.com/aultt/ProofOfConcepts/tree/master/AutomatedResumePauseDataServices&quot;&gt;AutomatedResumePauseDataServices&lt;/a&gt;.  For this blog, I will walk through the concepts as it relates to Azure SSIS Integrated Runtime (SSISIR).  Let’s get started with the simplest approach of leveraging ADF to stop/start SSISIR directly.  Microsoft provides an article which will walk you through how to do this &lt;a href=&quot;https://github.com/aultt/ProofOfConcepts/tree/master/AutomatedResumePauseDataServices&quot;&gt;here&lt;/a&gt; as well as how you can leverage an automation account with a run-book if you prefer.&lt;/p&gt;
+
+&lt;p&gt;While this provided the basic functionality, I wanted to have something more robust and something which could be easily shared with customers.  Therefore, I leveraged ADF with a mix of Logic Apps to provide more flexibility and usability. Two logic apps were developed per service, one for status and one for action.    Providing a way to check status ensures we only act when needed and also eliminates unwanted error messages.&lt;/p&gt;
+
+&lt;p&gt;Let’s dig in and dissect the Logic App for SSISIR status.  We have two different ways to look at a logic app, through a designer or through code.  We will look at both, but we will look at the designer first. After opening up the logic app click Logic app designer on the left.  From here you will be presented with the view shown below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage1.png&quot; alt=&quot;image1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To look at the actual properties we will just click the selection when a HTTP request is received.  From here we see two different properties which are important, HTTP Post URL and Request Body.  HTTP Post URL is the URL which we will leverage in ADF to call the Logic App and the request body will hold the parameters which we will pass to the logic app to perform an action. Within the request body you will see the following JSON:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage2.png&quot; alt=&quot;image2&quot; /&gt;
+These are values which we will need to pass to our logic app.&lt;/p&gt;
+
+&lt;p&gt;Next click HTTP so it also expands.  HTTP is the rest call we will be leveraging in this case to get the Status of our SSIS IR.  Take a look at the screen shot below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage3.png&quot; alt=&quot;image3&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Notice we have what appear to be variables in our URI.  These are the same values which we saw defined above in our request body.  We are leveraging them to allow for flexibility in calling our logic and for code reusability.&lt;/p&gt;
+
+&lt;p&gt;Finally click on Response and you will see something which resembles below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage4.png&quot; alt=&quot;image4&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As we are getting a status, we return the Status code and the body of the response to be further interrogated.&lt;/p&gt;
+
+&lt;p&gt;Alternatively, we could look at the logic app through code view. Since the logic app is ultimately just JSON, it makes it very simple to source control and provide as a community resource for others to consume.&lt;/p&gt;
+
+&lt;p&gt;Next let’s look at the SSISIR Action Logic app.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage5.png&quot; alt=&quot;image5&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The biggest difference I would like to note here is there is no response within the logic app.  Since here we are not getting the status but rather doing an action there is no response back.&lt;/p&gt;
+
+&lt;p&gt;So now the question is how do we deploy these logic apps, and more importantly how do we leverage them?  Let’s first talk about how we can deploy them with the code we can obtain from GitHub.  First thing to do is create a logic app and give it a name based on your naming standards.  For my SSISIR status logic app I named it Logic-App-Get-SSIS-Status.  For purposes of demonstration here I am going to leverage a logic app I named “test”.  Once you create the logic app then you will be presented with the following screen.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage6.png&quot; alt=&quot;image6&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Since we are leveraging code and not the designer, we have a couple of options here.&lt;/p&gt;
+
+&lt;p&gt;Select Blank Logic App Template.  After which you will need to select Code view as below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage7.png&quot; alt=&quot;image7&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Scroll the window pane to the left and then select Logic app code view
+Click your logic app name above and then select Logic app code view&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage8.png&quot; alt=&quot;image8&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now that you are in the Logic App Code view you can simply grab the JSON for Logic-App-Get-SSIS-Status from the GitHub repo &lt;a href=&quot;https://github.com/aultt/ProofOfConcepts/tree/master/AutomatedResumePauseDataServices/AzureSSISIR/LogicApp&quot;&gt;here&lt;/a&gt;.  Replace the entire JSON document in the logic app with the code from GitHub.  Save your logic app and then select Identity along the left side.  Here you will see System assigned identity is currently off. We want to turn this on and click Save.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage9.png&quot; alt=&quot;image9&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once complete follow the same steps for Logic-App-POST-SSIS-Action.  After completing this your logic apps are built and ready for consumption.&lt;/p&gt;
+
+&lt;p&gt;Consuming our logic apps will be done through an ADF pipeline.  Our pipeline will leverage both our status and our action logic app.  Below we show the GUI representation of the pipeline.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage10.png&quot; alt=&quot;image10&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Within our loop, we have the following actions:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage11.png&quot; alt=&quot;image11&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;First task is a web call to our logic app to get the status of the SSIS IR.  After the return, the output is interrogated. Based on the action passed, if it doesn’t match then it will call the action logic app to ensure the state matches.  ADF will continue to loop until the status of the SSIS IR matches the requested state.&lt;/p&gt;
+
+&lt;p&gt;As with logic apps, ADF pipelines are ultimately just JSON documents as well.  Again the JSON for the ADF pipeline can be found in my GitHub Repo &lt;a href=&quot;https://github.com/aultt/ProofOfConcepts/tree/master/AutomatedResumePauseDataServices/AzureSSISIR/DataFactory&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Key points here are the parameters listed at the bottom of the script.  When you go to deploy this to your ADF, you will want to replace the default values with your values for your environment.  When you are ready to create your pipeline, head over to ADF and create a new pipeline by clicking the + followed by clicking the Code icon in the upper right corner as depicted below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage12.png&quot; alt=&quot;image12&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;From here you can replace all the code with the code from the ADF JSON found in GitHub.  After pasting in the code, be sure to make the following changes:&lt;/p&gt;
+
+&lt;p&gt;Subscription: Subscription Name where SSIS IR resides
+Resource Group: Resource Group where SSIS IR resides
+IRName: Name of SSIS Integration Runtime
+GetStatusURL: URL of Logic app for status
+PostActionURL: URL of Logic app for action
+All of the above will likely be obvious, however, the last two may not.  These are the URLs which are associated with the Logic apps that ADF will call to leverage.  To find these, you will go back to the Logic app into the Logic app designer.  Once in the designer, click “When a HTTP request is received” and copy the HTTP POST URL.  This is the URL you will need for both the GetStatus URL and Post Action URL.&lt;/p&gt;
+
+&lt;p&gt;The final piece to add before testing out the automation is the Access control policies for the logic app and the data factory.  First let’s go to our data factory, once there click on Access control (IAM) on the left.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage13.png&quot; alt=&quot;image13&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;From here Click Add…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/managecostsimage14.png&quot; alt=&quot;image14&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For the Role, select contributor, and for Assign access to, select Logic App.  Finally select the logic app you added and click save.  Do this for each logic app.  Now your logic apps all have access to ADF.  Similarly, you will want to go to logic apps and ensure Data factory service has contributor role for each logic app.&lt;/p&gt;
+
+&lt;p&gt;Now you have an ADF Pipeline that can be called to stop/start the SSISIR.  You can choose to call this pipeline as part of another pipeline, or you could also create a trigger to call this on a schedule.  In my case, I have a trigger which runs at the end of each day to ensure all my data services have been shut down so that I don’t incur unneeded expenses.&lt;/p&gt;
+
+&lt;p&gt;If you find this helpful, then you can follow the same process to create the Azure SQL DW and Azure Analysis Service pipelines.  Please feel free to provide comments and feedback.&lt;/p&gt;</content><author><name>Troy Ault</name></author><category term="blog" /><category term="Azure" /><summary type="html"></summary></entry><entry><title type="html">Lift and Shift SSIS to Azure</title><link href="http://localhost:4000/blog/Lift-and-Shift-SSIS/" rel="alternate" type="text/html" title="Lift and Shift SSIS to Azure" /><published>2019-03-07T23:00:20-05:00</published><updated>2019-03-07T23:00:20-05:00</updated><id>http://localhost:4000/blog/Lift-and-Shift-SSIS</id><content type="html" xml:base="http://localhost:4000/blog/Lift-and-Shift-SSIS/">&lt;p&gt;&lt;img src=&quot;/assets/images/liftandshiftimage0.png&quot; alt=&quot;image0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;3/8/2019&lt;/p&gt;
+
+&lt;p&gt;With SQL Server 2008 end of life around the corner, July 9 2019 for those not aware, many companies are looking to lift and shift their SQL environments to the cloud. In doing so, most companies are looking for the opportunity to move to Platform as a Service (PaaS) because of the savings.&lt;/p&gt;
+
+&lt;p&gt;When we talk lift and shift of data, most times my discussions have been around moving SQL Server to Azure SQL Managed Instance. What about the other services which companies have leveraged for years on-prem? One of the services being SSIS which many companies have invested time and resources developing data flows. Luckily, these can be fairly easily lifted and shifted in in Azure with minimal or no code changes. Within this blog post I will discuss many of the steps required to configure the SSIS runtime, but more importantly, I will call out all the references to the official documentation for each component.&lt;/p&gt;
+
+&lt;p&gt;First thing that will be required is SSIS integration runtime. With the integration run time, we can leverage Azure SQL Database Server or Managed Instance to deploy our SSISDB. Is the concept of Integration runtime(IR) in Azure Data Factory a a new one to you? If so, then take a look at the following &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/data-factory/concepts-integration-runtime&quot;&gt;documentation&lt;/a&gt; which details all the different IR types available. A brief description of SSIS IR is the following taken from the documentation referenced above:&lt;/p&gt;
+
+&lt;p&gt;Azure-SSIS IR is a fully managed cluster of Azure VMs dedicated to run your SSIS packages. You can bring your own Azure SQL Database or Managed Instance server to host the catalog of SSIS projects/packages (SSISDB) that is going to be attached to it. You can scale up the power of the compute by specifying node size and scale it out by specifying the number of nodes in the cluster. You can manage the cost of running your Azure-SSIS Integration Runtime by stopping and starting it as you see fit.&lt;/p&gt;
+
+&lt;p&gt;Creating the SSIS IR is &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/data-factory/create-azure-ssis-integration-runtime&quot;&gt;documented&lt;/a&gt; very well for both deploying through the portal, PowerShell, or via Azure Resource Manager template. Depending on what your packages utilize you may need to do some custom configuration of the SSIS IR. &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/data-factory/how-to-configure-azure-ssis-ir-custom-setup&quot;&gt;Documentation&lt;/a&gt; around limitations and considerations should be reviewed. Custom setup lets you alter the default operating configuration or environment (for example, to start additional Windows services or persist access credentials for file shares) or install additional components (for example, assemblies, drivers, or extensions) on each node of your Azure-SSIS IR.&lt;/p&gt;
+
+&lt;p&gt;The example I ran into recently was leveraging windows files shares within a package. If the SSIS package is relatively small, then updating file shares and changing them over to a URL to a blob store may be simple. However, if the package has many references to UNC paths changing, then these could be time consuming and require much regression testing. Luckily the steps to prevent this work is relatively easy.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://learn.microsoft.com/en-us/azure/data-factory/ssis-azure-connect-with-windows-auth?view=sql-server-2017&quot;&gt;Documentation&lt;/a&gt; exists for connecting data sources and file shares with SSIS packages in Azure, however, for my specific example it wasn’t crystal clear the steps that were required. So I’m documenting here in hopes it will save others some time. In order to move forward, you will need an already configured SSIS IR and a storage account with files shares. We covered SSIS IR earlier in this post. If you need assistance in creating the storage account and file share, then there is a nice walkthrough which can be found &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/storage/files/storage-files-quick-create-use-windows&quot;&gt;here&lt;/a&gt;. Ensure you have a blob container created and a file share.&lt;/p&gt;
+
+&lt;p&gt;Now we have our pre-reqs we can move to our custom configuration of our SSIS IR. We need to collect some information from our file share, specifically the username and key. To do this, navigate to the storage account, select Files, then select the file share you created. Next click Connect as shown below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/liftandshiftimage1.png&quot; alt=&quot;image1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After selecting this you will be presented with options for Windows, Linux, and MacOS. For our purposes we just need the UNC path, the user name, and the key. I have cleared out my storage key but show both the others below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/liftandshiftimage2.png&quot; alt=&quot;image2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once we have these three then we can now move to create a main.cmd file which will be called by the SSIS IR. Below you will see the contents of our file. You will want to replace the with your URL, user, and pass. you obtained above. Save this file as we will upload it to our blob store next.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/liftandshiftimage3.png&quot; alt=&quot;image3&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we need to upload our main.cmd file to the container we created in our blob store. Navigate to this container and upload the file. Once you have uploaded the file, we then need to create a Shared access signature. The easiest way to do this is using Azure Storage Explorer. You can easily launch it by going to the overview of the storage account and clicking Open In Explorer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/liftandshiftimage4.png&quot; alt=&quot;image4&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you don’t have Azure Storage Explorer downloaded, then it will provide a link for you to download it. If you do, then you can launch it directly from the portal. Once storage explorer is opened you will need to connect to your azure subscription and browse to your storage account. Right click on the storage container and select Get Shared Access Signature.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/liftandshiftimage5.png&quot; alt=&quot;image5&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ensure you grant Read, Write, and List permissions for the signature. You will want to consider how long this Signature should be valid. Once this expires you will need to reconfigure your SSIS IR. Whatever you decide, make a note and a reminder on your calendar to update it once it expires. Once you click Create you will be presented with the URL and Query string. Copy both and store for later.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/liftandshiftimage6.png&quot; alt=&quot;image6&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally we are ready to configure our custom SSIS IR and then start it up. To make this easier, I have provided a PowerShell script that you will need to update four variables at the top of the script and then execute it. The script is available on my GitHub account and its name is &lt;a href=&quot;https://github.com/aultt/ProofOfConcepts/tree/master/SanitizeDBandUploadToAzure/PowerShell&quot;&gt;ReconfigureSSISIR.ps1&lt;/a&gt;. Download the PowerShell script and update the following variables at the top of the script $MyDataFactoryName , $MyAzureSsisIrName, $MyResourceGroupName, $MySetupScriptContainerSasUri. MySetupScriptContainerSasUri is the URL you copied from the previous step.&lt;/p&gt;
+
+&lt;p&gt;You have now successfully configured your SSIS IR with a custom configuration which will allow your packages to reference a UNC path. Your package variables will now reference any file within the File Share as below. No credential are required because the custom configuration handles the authentication. If you haven’t deployed the package already then deploy the package to SSIS DB. You can now execute the package directly from SSIS DB catalog or create an ADF pipeline to execute the package.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/liftandshiftimage7.png&quot; alt=&quot;image7&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This concludes our custom configuration of the SSIS runtime, however, I would like to point out a few other things which may come up as a need as your are lifting your packages into Azure.&lt;/p&gt;
+
+&lt;p&gt;If you have the need to copy files from your on-prem datacenter into Azure, then you will need to also have a &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory&quot;&gt;self-hosted integration runtime&lt;/a&gt;. This is a very easy setup, just requires downloading an MSI and installing it on an existing server. Something to consider if you are moving files to an azure storage and you have configured &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal&quot;&gt;Azure Storage Firewalls&lt;/a&gt;, then you will want to ensure your self-hosted integration runtime resides on a virtual machine running in a Vnet/subnet which is permitted through the firewall.&lt;/p&gt;
+
+&lt;p&gt;Two addition links I would like to provide you in case you find the need to &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/data-factory/concepts-pipeline-execution-triggers&quot;&gt;call an Azure Data factory Pipeline through code&lt;/a&gt; or &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/data-factory/how-to-schedule-azure-ssis-integration-runtime&quot;&gt;schedule start and stop of SSIS IR&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Hopefully someone will save some time and frustration with the resources here today or at least utilize it for reference for the underlying articles. Happy Automating!&lt;/p&gt;</content><author><name>Troy Ault</name></author><category term="blog" /><category term="Azure" /><category term="SQL Server" /><summary type="html"></summary></entry><entry><title type="html">Automating SQL Server in Azure Part 3</title><link href="http://localhost:4000/blog/Automating-SQL-In-Azure-Part3/" rel="alternate" type="text/html" title="Automating SQL Server in Azure Part 3" /><published>2019-01-15T05:41:20-05:00</published><updated>2019-01-15T05:41:20-05:00</updated><id>http://localhost:4000/blog/Automating-SQL-In-Azure-Part3</id><content type="html" xml:base="http://localhost:4000/blog/Automating-SQL-In-Azure-Part3/">&lt;p&gt;&lt;img src=&quot;/assets/images/autosqlpart3image0.png&quot; alt=&quot;image0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;1/15/2019&lt;/p&gt;
+
+&lt;p&gt;Finishing out the series on SQL Server Automation for IaaS. The final template is SQL Server Failover Cluster Instance running on storage spaces direct.&lt;/p&gt;
+
+&lt;p&gt;Source code for this and all other templates can be found on my Github. For this template the direct link is &lt;a href=&quot;https://github.com/aultt/ARM/tree/master/FCIS2DExistingVnet&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Ensure you have read through the first two posts in this series, as in each one I discuss the differences but not in as much detail if it has been covered previously.&lt;/p&gt;
+
+&lt;p&gt;Across all three templates the same files exist:&lt;/p&gt;
+
+&lt;p&gt;template.json : ARM Template which describes what will be deployed.
+parameters.json : Parameter file passed to ARM template with variables defined for deployment
+DSC Folder : DSC configurations applied to SQL Servers at build time
+deploy.ps1 : PowerShell script to aid in deploying the template
+Deploy file looks the same as both the previous with the exception subscription was added as a parameter.&lt;/p&gt;
+
+&lt;p&gt;Below you will see a list of the parameters required to be updated/verified in the parameters.json file:&lt;/p&gt;
+
+&lt;p&gt;location : region where machines will be deployed
+namePrefix: Prefix which will be used for naming resources. Virtual machines will have a numeric number appended.
+virtualMachineSize : Azure machine size of the VM to create.
+existingVirtualNetworkRGName: Resource Group Name where VNet is created.
+existingVirtualNetworkName: Name of the VNet which you are deploying to.
+existingSubnet: Name of the subnet you are deploying to.
+domainName: Name of your domain fully qualified. (Ex. tamz.us)
+adminUsername: local administrator account for windows
+adminPassword: KeVault reference to local admin password.
+networkSecurityGroupName: Name of the network security group which is created.
+availabilitySetName: Name of Availability Set which is created for all VMs to reside in.
+ClusterStaticIP: Static IP address assigned to the cluster. There is often confusion around this as Azure has no way to assign static ip addresses. In this case, you will grab an ip address within your VNet, when the load balancer is created then behind the scenes Azure will reserve the IP address for you making it static.
+ClusterIPSubnetClass: Subnet Class for the ClusterIp. (For a /24 provide 24 for a /16 provide 16)
+ClusterIPSubnetMask: Subnet mask for the ClusterIP. (for a /24 255.255.255.0)
+logdrivesize: Size of the log partition which will be created on the Storage Spaces Direct Volume.
+datadrivesize: Size of the data partition which will be created on the Storage Spaces Direct Volume.
+tempdbdrivesize: Size of the tempdb partition which will be created on the Storage Spaces Direct Volume.
+sqlClusterName: SQL Network name for the FCI
+sqlPort : Port SQL Server will be listening on
+sqlStaticIP: Static IP address assigned to the SQL NetworkName.
+diagnosticStorageAccountName: Name of the diagnosticStorageAccount where you would like to store diagnostics
+diagnosticStorageAccountId: Id of the Storage account. (This can be found by clicking properties on the storage account)
+sqlAuthenticationLogin: SQL account which will be made the sa.
+sqlAuthenticationPassword: KeVault reference to the sa password.
+sqlSysAdmins: Windows domain group which you would like to have sysadmin role.
+domainUsername: Domain user with the ability to add computers to the domain and the ability to create computer accounts, such as Cluster and Availability Group listener.
+sqlUserName: User account which will be running SQL Server Service
+sqlUserPassword: KeyVault reference to the password for the SQL Service account
+agtUserName: User Account which will be running SQL Server Agent Service account
+agtUserPassword: KeyVault reference to the password for the SQL Service Agent account
+_artifactsLocation: location of artifacts. If you don’t make any changes to the DSC template, then this can be left to point to my Github. If you need to make changes, then this allows you to point it to another location.
+After looking through the parameters you will find a a few additional, which you would expect if you have installed a SQL Failover Cluster in the past.&lt;/p&gt;
+
+&lt;p&gt;Taking a look at the template.json file, we will find everything is pretty much the same with one exception. Storage spaces direct requires a minimum of two disks per server. With storage spaces direct, we are also limited to one storage volume per cluster. With this being the case, we need to have the ability to pool disks to ensure we meet our performance requirement. Below you will see the json which creates the disks required for the pool. Notice you have the flexibility to specify the number size and type of storage used.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/autosqlpart3image1.png&quot; alt=&quot;image1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The remainder of the tempate.json file is identical or nearly identical to AlwaysOn.&lt;/p&gt;
+
+&lt;p&gt;So where does the difference really reside you ask? The majority of the differences fall in the DSC templates. Storage spaces direct requires all nodes and disks are present before enabling and creating the pool. This in turn means there is less room for parallel tasks. Without parallel task, our time to build the cluster is longer. This is only relevant at time of build but worth noting. For comparison, a two node AlwaysOn cluster with previous template took about 30 min in my tests while the two node FCI cluster took slightly over an hour. So let’s walk through the primary configuration first then we will walk through the secondary.&lt;/p&gt;
+
+&lt;p&gt;Looking at PrimarySQLNode.ps1, everything will look the same until just prior to the SQL Server Installation. You will see a new script component labeled SQLClusterConnectivity. Ultimately, this is leveraging Invoke-sqlcmd to verify if a connection can be made to the SQL Cluster Network Name. If it cannot, then it sleeps and attempts again until retrycount is exceeded. You may ask yourself “but I haven’t installed SQL yet, how does SQL Exist?” This is the big change with FCI. To install SQL, we must have the cluster created and we must have a shared disk to install SQL on. Before we can create the storage volume, we must have a cluster with all nodes and disks present. So… what happens is PrimarySQLNode.ps1 adds the server to the domain, installs all the windows features required, creates the cluster, and configures any non cluster specific parameters on the server. At that time it will wait until SecondarySQLNode has essentially completed its tasks. The final outcome of SecondarySQLNode is SQL Server running on a single node of the cluster. Once PrimarySQLNode finds this running it will continue on and AddNode to SQL Cluster completing the configuration.&lt;/p&gt;
+
+&lt;p&gt;Finally, we will look at SecondarySQLNode.ps1. The first half of the configuration is identical to the AlwaysOn configuration. Differences begin after the node is added to the cluster.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/autosqlpart3image2.png&quot; alt=&quot;image2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here we see a script resource EnableS2D which enables storage spaces direct on the cluster and creates the three partitions required for data, log and tempdb. After the storage pool and partitions are created, SQL Server can be installed and configured. The final step required is adding the load balancer probe to the SQL Cluster Resource which enables connectivity to the SQL Instance from other machines.&lt;/p&gt;
+
+&lt;p&gt;Hopefully these ARM templates will aid customers in their journey to the cloud. Happy automating!&lt;/p&gt;</content><author><name>Troy Ault</name></author><category term="blog" /><category term="Azure" /><category term="ARM" /><category term="DSC" /><category term="SQL Server" /><summary type="html"></summary></entry><entry><title type="html">Automating SQL Server in Azure Part 2</title><link href="http://localhost:4000/blog/Automating-SQL-In-Azure-Part2/" rel="alternate" type="text/html" title="Automating SQL Server in Azure Part 2" /><published>2019-01-03T05:41:20-05:00</published><updated>2019-01-03T05:41:20-05:00</updated><id>http://localhost:4000/blog/Automating-SQL-In-Azure-Part2</id><content type="html" xml:base="http://localhost:4000/blog/Automating-SQL-In-Azure-Part2/">&lt;p&gt;&lt;img src=&quot;/assets/images/autosqlpart2image0.png&quot; alt=&quot;image0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;1/3/2019&lt;/p&gt;
+
+&lt;p&gt;Continuing where we left off from our last post, we are now going to look into a more complex Azure Resource Manager (ARM) template. In this post we will cover an Always On deployment to an existing VNet and domain.&lt;/p&gt;
+
+&lt;p&gt;Provided you read the first post in this series, you will have a copy of my Github ARM repo local to your machine. If not, head over to Github and download or fork a copy from &lt;a href=&quot;https://github.com/aultt/ARM&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now that we have a copy to work with locally, let’s take a look at the files we have to work with. Things should look very similar to the standalone files. We have three files and a folder just as we did before:&lt;/p&gt;
+
+&lt;p&gt;template.json : ARM Template which describes what will be deployed.
+paramaters.json : Parameter file passed to ARM template with variables defined for deployment
+DSC Folder : DSC configurations applied to SQL Servers at build time
+deploy.ps1 : PowerShell script to aid in deploying the template
+Again, we will start with the deploy.ps1 file.
+You will quickly see this looks just like the standalone template with the exception of the variables values. We won’t go into the specifics of the contents of this file. If you would like a detailed walk through, then please reference the first post in this series.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/autosqlpart2image1.png&quot; alt=&quot;image1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;parameters.json will look similar to the standalone template, however, we now have many additional variables which we must pass. Below is a list of the variables and their description:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;location : region where machines will be deployed&lt;/li&gt;
+  &lt;li&gt;namePrefix: Prefix which will be used for naming resources. Virtual machines will have a numeric number appended.&lt;/li&gt;
+  &lt;li&gt;vmCount: number of vm’s to create. (Valid values: 2-8)&lt;/li&gt;
+  &lt;li&gt;virtualMachineSize : Azure machine size of the VM to create.&lt;/li&gt;
+  &lt;li&gt;existingVirtualNetworkRGName: Resource Group Name where VNet is created.&lt;/li&gt;
+  &lt;li&gt;existingVirtualNetworkName: Name of the VNet which you are deploying to.&lt;/li&gt;
+  &lt;li&gt;existingSubnet: Name of the subnet you are deploying to.&lt;/li&gt;
+  &lt;li&gt;domainName: Name of your domain fully qualified. (Ex. tamz.us)&lt;/li&gt;
+  &lt;li&gt;adminUsername: local administrator account for windows&lt;/li&gt;
+  &lt;li&gt;adminPassword: KeVault reference to local admin password.&lt;/li&gt;
+  &lt;li&gt;networkSecurityGroupName: Name of the network security group which is created.&lt;/li&gt;
+  &lt;li&gt;availabilitySetName: Name of Availability Set which is created for all VMs to reside in.&lt;/li&gt;
+  &lt;li&gt;ClusterStaticIP: Static IP address assigned to the cluster. There is confusion often around this as Azure has no way to assign static ip addresses. In this case you will grab an ip address within your VNet, when the load balancer is created behind the scenes Azure will reserve the IP address for you making it static.&lt;/li&gt;
+  &lt;li&gt;ClusterIPSubnetClass: Subnet Class for the ClusterIp. (For a /24 provide 24 for a /16 provide 16)
+availabilityGroupName: Name of the availability group to be created.&lt;/li&gt;
+  &lt;li&gt;sqlPort : Port SQL Server will be listening on&lt;/li&gt;
+  &lt;li&gt;listenerStaticIP: Static IP address for AvailabilityGroup Listener.&lt;/li&gt;
+  &lt;li&gt;listenerSubnetMask: Subnet Mask for availability Group&lt;/li&gt;
+  &lt;li&gt;diagnosticStorageAccountName: Name of the diagnosticStorageAccount where you would like to store diagnostics&lt;/li&gt;
+  &lt;li&gt;diagnosticStorageAccountId: Id of the Storage account. (This can be found by clicking properties on the storage account)&lt;/li&gt;
+  &lt;li&gt;sqlAuthenticationLogin: SQL account which will be made the sa.&lt;/li&gt;
+  &lt;li&gt;sqlAuthenticationPassword: KeVault reference to the sa password.&lt;/li&gt;
+  &lt;li&gt;sqlSysAdmins: Windows domain group which you would like to have sysadmin role.&lt;/li&gt;
+  &lt;li&gt;domainUsername: Domain user with the ability to add computers to the domain and the ability to create computer accounts, such as Cluster and Availability Group listener.&lt;/li&gt;
+  &lt;li&gt;sqlUserName: User account which will be running SQL Server Service&lt;/li&gt;
+  &lt;li&gt;sqlUserPassword: KeVault reference to the password for the SQL Service account&lt;/li&gt;
+  &lt;li&gt;_artifactsLocation: location of artifacts. If you don’t make any changes to the DSC template this can be left to point to my Github. If you need to make changes this allows you to point it to another location.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As you can see, we have have many additional parameters we need to provide for an AlwaysOn template. Keep in mind these are just the required parameters, there are many other parameters you could choose to pass if you need to deviate from one of the values I have defaulted.&lt;/p&gt;
+
+&lt;p&gt;Let’s now move on and look at template.json. template.json holds the additional parameters we could pass as well as all of the different resources which will be created with our template. Take a look at the parameters block. We have virtually every item here which can be passed as a parameter. If you find something that is not parameterized feel free to submit a pull request with it, or raise an issue and we will look to add it. Take a moment to look through all the parameters and familiarize yourself with what’s available.&lt;/p&gt;
+
+&lt;p&gt;Moving down the document, the next notable resource I want to cover is availabilitySets. A quick definition of an availability set is provided below:&lt;/p&gt;
+
+&lt;p&gt;An Availability Set is a logical grouping capability that you can use in Azure to ensure that the VM resources you place within it are isolated from each other when they are deployed within an Azure datacenter. Azure ensures that the VMs you place within an Availability Set run across multiple physical servers, compute racks, storage units, and network switches. If a hardware or Azure software failure occurs, only a subset of your VMs are impacted, and your overall application stays up and continues to be available to your customers. Availability Sets are an essential capability when you want to build reliable cloud solutions. https://docs.microsoft.com/en-us/azure/virtual-machines/windows/tutorial-availability-sets&lt;/p&gt;
+
+&lt;p&gt;Storage Account is the next resource which is defined. We provision a storage account to utilize as a Cloud Witness for our Windows Cluster.&lt;/p&gt;
+
+&lt;p&gt;Virtual Machines is our next resource. I’d like to point out here an important feature within the json document. Notice the copy item, this is how we create from 2 – 8 different virtual machines depending on the vmCount which you pass. All machines are built alike and the template just creates a loop which it executes till the vmCount is reached.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/autosqlpart2image2.png&quot; alt=&quot;image2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You will notice as you look through the virtual Machines section, the disks which are created and the size and type of disk are parameters which can be passed.&lt;/p&gt;
+
+&lt;p&gt;Extensions resource follows our virtual Machines. Extensions are where are DSC Configurations are defined. Below I have highlighted the interesting points for the DSC Extension.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/autosqlpart2image3.png&quot; alt=&quot;image3&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note again we leverage the copy loop to loop through each VM created and apply the DSC Configuration. The difference here lies in the script for the configuration. We want to apply a different script for the first Node in the cluster than the remaining nodes. Why? Because initially we have to create the Windows Cluster, and we need to Create the Availability Group. We only do this once, on all other nodes we will do a join instead of a create. We will talk more through this when we get to the DSC configuration. Just note here we call PrimarySQLNode configuration for the first node and all other nodes will get SecondSQLNode applied.&lt;/p&gt;
+
+&lt;p&gt;Following our extensions we have our network Interfaces and our load balancer. If you haven’t done any Azure deployments of Always On, you may be saying load balancer – why? Below is a picture which depicts how the Internal Load balancer is being utilized. The key difference for an Availability Group in Azure Virtual Machines is that the Azure virtual machines, require a load balancer. The load balancer holds the IP addresses for the availability group listener. If you have more than one availability group, then each group requires a listener. One load balancer can support multiple listeners.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/autosqlpart2image4.png&quot; alt=&quot;image4&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We have now gone through all of the resources with the template.json file. The final thing to review are the two DSC Configurations included within the DSC folder. The two files are virtually identical with the difference being the secondary does a Join to the cluster and Availability Group as opposed to creating them. In addition, the secondary waits for Cluster and Availability Group to exist before it attempts to join and continue. Doing so allows for many items within the configuration to be completed in parallel ultimately saving build time.&lt;/p&gt;
+
+&lt;p&gt;Opening up PrimarySQLNode.ps1 and walk through the file. As you walk through the file, look below as I will list out all the items which are set by the configuration:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Create a Firewall rule for the SQL Probe on the load balancer to communicate.&lt;/li&gt;
+  &lt;li&gt;Create a Firewall run for the Cluster Probe on the load balancer to communicate.&lt;/li&gt;
+  &lt;li&gt;Series of Disk configurations waiting for disks to be available then creating the volume and formatting the volume 64kb for SQL.&lt;/li&gt;
+  &lt;li&gt;Install Failover Cluster Role on server&lt;/li&gt;
+  &lt;li&gt;Install FailoverCluster tools&lt;/li&gt;
+  &lt;li&gt;Install PowerShell tools for clustering.Installs Active Directory PowerShell tools&lt;/li&gt;
+  &lt;li&gt;Join machine to the domain&lt;/li&gt;
+  &lt;li&gt;Create windows cluster&lt;/li&gt;
+  &lt;li&gt;Add Probe to the cluster resource to allow it to monitor the state of the cluster.&lt;/li&gt;
+  &lt;li&gt;Set Cluster Quorum to Cloud Majority Node set.&lt;/li&gt;
+  &lt;li&gt;Set PowerPlan to High Performance&lt;/li&gt;
+  &lt;li&gt;Set TimeZone : EST by default&lt;/li&gt;
+  &lt;li&gt;Install SQL Server&lt;/li&gt;
+  &lt;li&gt;Assign PerformVolumeMaintenance Tasks to SQL Server Account&lt;/li&gt;
+  &lt;li&gt;Assign Lock Pages in Memory to SQL Server Account&lt;/li&gt;
+  &lt;li&gt;Set MaxDop based on number of cores allocated&lt;/li&gt;
+  &lt;li&gt;Set Max Memory based on memory allocated to machine&lt;/li&gt;
+  &lt;li&gt;Create Firewall rule for SQL Server&lt;/li&gt;
+  &lt;li&gt;Create login for Cluster Service&lt;/li&gt;
+  &lt;li&gt;Add permissions to Cluster Service to allow it to manage availability groups&lt;/li&gt;
+  &lt;li&gt;Create Endpoint for AlwaysOn&lt;/li&gt;
+  &lt;li&gt;Enable Always ON Feature for SQL Server&lt;/li&gt;
+  &lt;li&gt;Create SQL Availability Group&lt;/li&gt;
+  &lt;li&gt;Create SQL Availability Group Listener&lt;/li&gt;
+  &lt;li&gt;Add Probe to SQL Cluster Resource&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Notice the same items are set for each instance of SQL Server. Here the differences are all of the additional configuration required for clustering. I’ll note here, the other file stored within the DSC directory is Cluster.ps1.zip. Within the zip file are all the different DSC resources which are required to deploy the configuration. I’ll note here as well, StorageDsc and xFailoverCluster both have modifications from what is available in GitHub today. The changes were required for the resources to work within Azure.&lt;/p&gt;
+
+&lt;p&gt;We have now walked through all of the resources required to deploy an AlwaysOn Cluster in Azure. As before, I’ll note in my testing that I have tested a two node cluster and an eight node cluster. Two nodes took a total of 30 minutes to complete while the eight node cluster took 40 min in total. All and all thats pretty darn quick to build out a cluster. As always feel free to comment here or on my GitHub. Happy Automating!&lt;/p&gt;</content><author><name>Troy Ault</name></author><category term="blog" /><category term="Azure" /><category term="ARM" /><category term="DSC" /><category term="SQL Server" /><summary type="html"></summary></entry><entry><title type="html">Automating SQL Server in Azure Part 1</title><link href="http://localhost:4000/blog/Automating-SQL-In-Azure-Part1/" rel="alternate" type="text/html" title="Automating SQL Server in Azure Part 1" /><published>2019-01-02T05:41:20-05:00</published><updated>2019-01-02T05:41:20-05:00</updated><id>http://localhost:4000/blog/Automating-SQL-In-Azure-Part1</id><content type="html" xml:base="http://localhost:4000/blog/Automating-SQL-In-Azure-Part1/">&lt;p&gt;&lt;img src=&quot;/assets/images/autosqlpart1image0.png&quot; alt=&quot;image0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;1/2/2019&lt;/p&gt;
+
+&lt;p&gt;In the previous blog entry, we talked about the different options available for SQL Server running in a PaaS solution in Azure. Today we will focus on the IaaS solutions available.&lt;/p&gt;
+
+&lt;p&gt;Let’s get started! We have four different options when implementing SQL Server in an IaaS solution. The first three will be familiar if you have deployed SQL Server on-prem previously, with a couple of slight differences. We have SQL Server stand alone, SQL Server AlwaysOn Availability Groups, SQL Server failover cluster instance (FCI) , and finally SQL Server running in a container within Azure Kubernetes Service.&lt;/p&gt;
+
+&lt;p&gt;Over the last year I have been working with customers, many of which struggle with getting started with Azure Resource Manager(ARM) templates. What I have found is customers are far more successful if they have an example which hits at least 80% of what they need for their environment. Therefore, I have put together a series of ARM templates which include the vast majority of the configurations customers have asked for. The best part is that it is stored on Github so everyone can take advantage of the work and if they so choose contribute or ask for additional features via the Issues tab in Github.&lt;/p&gt;
+
+&lt;p&gt;Today I am going to focus on automating the first implementation SQL Server stand alone. So to get started you will want to head over to my GitHub pull down or fork my ARM repo. Direct link can be found &lt;a href=&quot;https://github.com/aultt/ARM&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;For those who are not familiar with ARM templates I will first walk through the series of files which are included. Once you unzip the ARM-master.zip file you will have a series of files and directories. We are focusing on SQL Server stand alone so open up the folder SQLStandAloneExistingVnet.&lt;/p&gt;
+
+&lt;p&gt;As the name implies, this template will allow you to create a Stand Alone SQL server in your existing domain and Vnet within Azure. Within the folder, we will find three files and a folder, each of which are described below:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;azuredeploy.json : ARM Template which describes what will be deployed.&lt;/li&gt;
+  &lt;li&gt;azuredeploy.paramaters.json : Parameter file passed to ARM template with variables defined for deployment&lt;/li&gt;
+  &lt;li&gt;DSC Folder : DSC configuration applied to SQL Server at build time&lt;/li&gt;
+  &lt;li&gt;StandAloneDeploy.ps1 : PowerShell script to aid in deploying the template&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you have never heard of Azure Resource Manager (ARM) and would like to have a high level understanding of how it is laid out check out the following &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview&quot;&gt;article&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;First, let’s review the PowerShell script to understand how we will deploy this template.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/autosqlpart1image1.png&quot; alt=&quot;image1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As we can see, this script has four variables that need to be defined:
+Resource Group Name: Name of the resource group which will be created for your deployment
+Resource Group Location: Location where resource group will be created.
+Template File: Location of the template file which you downloaded from Github.
+Template Parameter File: Location of the template parameter file which we will discuss next.
+Last item which you will want to change will be the SubscriptionName you are creating the resource group in. Currently this is not a variable however it could be made one.
+After the variable declaration, we see the next statement is Import-Module Az followed by Login-AzAccount. If you haven’t done ARM template development before, then you will likely not have this module available to import. No worries, you can still install the module. If you need to install, ensure you are at an elevated PowerShell prompt and type Install-module AZ. Once complete you can continue further.&lt;/p&gt;
+
+&lt;p&gt;After login-AZAccount, the next block of code simply checks for the existence of the resource group you asked for in the deployment. If it doesn’t exist, then it creates it.&lt;/p&gt;
+
+&lt;p&gt;Finally, the last line is what actually deploys the template with the parameter file you passed.&lt;/p&gt;
+
+&lt;p&gt;azuredeploy.parameters.json holds all the required parameters you need to pass with the template to successfully deploy. There are many other parameters that can be passed which we will cover later. Listed below are the required parameters along with a short description:&lt;/p&gt;
+
+&lt;p&gt;VMName : Actual Name of the machine which will be created and placed into your domain.
+localadminsusername: localadmin account created on the machine
+localadminPasswor: keyVault reference to the password. **
+ExistingDomainName: your fully qualified domain name. (Ex. tamz.us)
+domainUserName: UserName of a domain user with the ability to add machines to the domain
+domainUserPassword: keyVault reference to the password. **
+existingVirtualNetworkResourceGroup: ResourceGroup where your existing Virtual Network (VNet) lives.
+existingVirtualNetworkName: Name of the existing VNET where the new SQL Server will be placed.
+existingSubnet: Name of the existing subnet the new SQL will be will created in.
+All other parameters are defaulted within the template however they could be added to the parameters files if you would like to override the default values.&lt;/p&gt;
+
+&lt;p&gt;** KeyVault reference above. More and more scripts are stored in source control, and too many times it’s difficult to sanitize scripts before checking them in. As a result, all of my scripts leverage KeyVault as a store for sensitive data. If you currently don’t have a KeyVault deployed, then you will want to create a KeyVault, capture the id of the KeyVault, and place here along with the secret you would like to retrieve. If you are having a hard time finding the id, then do the following:&lt;/p&gt;
+
+&lt;p&gt;Click the KeyVault from the Portal
+Select Properties on the left menu
+Record the value of Resource ID
+azuredeploy.json is the main template which holds all of the resource definitions for the template we are deploying. I’m going to point out a few things of interest within this file. The first entry you will see that is notable is the parameters block. Each item within this block can be defined within the parameters file if the default value listed does not meet your needs. As an example, one parameter which is missing from the parameter file is sqlSysAdmins. This is the group which you would like to be granted the SysAdmins role in SQL Server. To add this to your parameter file, you simply put a comma after the } which closes out existingSubnet, and place the name and value. For example, for me it would look like the below:&lt;/p&gt;
+
+&lt;p&gt;“existingSubnetName”: {
+“value”: “data”
+},
+“sqlSysAdmins”:{
+“value”: “TAMZ\DBA”
+}&lt;/p&gt;
+
+&lt;p&gt;Any additional parameters would follow the same pattern. As we look through the remainder of the template, we will see resources such as the network interface get created as well as the virtual machine. The last resource we will see within the template is an extension called DSC. If you are unfamiliar with DSC, it stands for Desired State Configuration. If you are looking to become more familiar with it, please see some of my earlier blog posts on DSC.&lt;/p&gt;
+
+&lt;p&gt;The last two files we have to discuss are in the folder labeled DSC. Within this folder you will find the following files:&lt;/p&gt;
+
+&lt;p&gt;Standalone.ps1 : DSC configuration for SQL Server being deployed
+StandAlone.ps1.zip : Compressed files containing all the resources required for the DSC configuration.
+While in this post I won’t go into the specifics of how DSC operates, I will describe what this particular configuration will provide you. All parameters you find within the DSC configuration can be passed through the ARM template file and will automatically be passed in turn to this configuration. So what all are we doing with this script? Take a look below as I will list out all the items which are set by the configuration:&lt;/p&gt;
+
+&lt;p&gt;Create SQL Server Data drive and format as 64kb
+Create SQL Server Log drive and format as 64kb
+Set PowerPlan to High Performance
+Set TimeZone : EST by default
+Install SQL Server
+Assign PerformVolumeMaintenance Tasks to SQL Server Account
+Assign Lock Pages in Memory to SQL Server Account
+Set MaxDop based on number of cores allocated
+Set Max Memory based on memory allocated to machine
+Create Firewall rule for SQL Server
+While there are others things that can be set for SQL Server, these hit the top things recommended for SQL Server running in Azure. Article referenced for these settings in its entirety can be found here.&lt;/p&gt;
+
+&lt;p&gt;This concludes the walk through of the template. For reference, when I deploy the template in my environment I have a fully configured SQL Server after roughly 23 min. Your experience may vary depending on different factors.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/autosqlpart1image2.png&quot; alt=&quot;image2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Next post we will look at the AlwaysOn template, walk through the differences from on-prem to Azure, and show you how you can leverage it.&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading and happy automating!&lt;/p&gt;</content><author><name>Troy Ault</name></author><category term="blog" /><category term="Azure" /><category term="ARM" /><category term="DSC" /><category term="SQL Server" /><summary type="html"></summary></entry></feed>
