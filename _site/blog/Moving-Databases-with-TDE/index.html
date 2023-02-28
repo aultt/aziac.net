@@ -1,0 +1,687 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Moving Databases with TDE to Azure SQL MI - Azure Infrastructure as Code</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Troy Ault">
+  
+  <meta property="article:author" content="Troy Ault">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure Infrastructure as Code">
+<meta property="og:title" content="Moving Databases with TDE to Azure SQL MI">
+<meta property="og:url" content="http://localhost:4000/blog/Moving-Databases-with-TDE/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-01-19T05:41:20-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/Moving-Databases-with-TDE/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Azure Infrastructure as Code Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Azure Infrastructure as Code
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/MyPortfolioimage.png" alt="Troy Ault" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Troy Ault</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Automation one day at a time!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://troyault.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">troyault.com</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/aultt" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Moving Databases with TDE to Azure SQL MI">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2020-01-19T05:41:20-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/blog/Moving-Databases-with-TDE/" class="u-url" itemprop="url">Moving Databases with TDE to Azure SQL MI
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><img src="/assets/images/movingdbimage0.png" alt="image0" /></p>
+
+<p>1/19/2020</p>
+
+<p>Many customers are long on their journey to Azure, while some are just beginning. As customers begin to look at migrating databases, security is typically the first discussion point. By default, Azure SQL encrypts data at rest and in transit. Azure does this utilizing a system managed key, however, you may also bring your own key (BYOK) if you would like too.</p>
+
+<p>In this blog post I am going to discuss moving a database to Azure SQL Managed instance which is currently leveraging transparent data encryption (TDE). There are three options of how this can be implemented. The first is to configure your Managed Instance (MI) to utilize a customer-managed key. Reference documentation can be found <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/transparent-data-encryption-byok-overview?view=azuresql">here</a>. The second is to just restore your database to MI and allow MI to manage the encryption key. Reference documentation can be found <a href="https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/tde-certificate-migrate?tabs=azure-powershell&amp;view=azuresql">here</a>. The third is to leverage a managed service, Data Migration Service (DMS), which will restore the database and migrate the certificate for you. Reference documentation can be found <a href="https://learn.microsoft.com/en-us/azure/dms/tutorial-sql-server-to-managed-instance#configure-migration-settings">here</a>.</p>
+
+<p>For this blog post I will focus on option two as the scenario I am looking to fulfill is one where is customer is refreshing a database in Azure on a schedule. DMS is targeted as a tool to migrate the application to Azure, however, in this case we are doing continual testing and want to leverage updated database backups from on-prem. Therefore, for this post we will walk through how to move the certificate to Managed Instance as well as walk through how you can automate the database restores.</p>
+
+<p>First step we will need to do is setup a database and enable TDE. To do this I referenced Microsoft documentation which can be found <a href="https://learn.microsoft.com/en-us/sql/relational-databases/security/encryption/transparent-data-encryption?view=sql-server-ver15">here</a>. As this is documented well, I will just provide my <a href="https://github.com/aultt/ProofOfConcepts/blob/master/SQLDatabaseRefreshtoSQLMI/EnableTDEandbackupcert.sql">script</a> as reference. If this is unclear please comment and I will provide additional details.</p>
+
+<p>We now have a functioning TDE database on our server and can begin the process of exporting the certificate. If you are attempting to migrate a certificate from an existing database you may get an error and discover that your certificate is expired. While this does not prevent TDE from functioning, it will require you update the certificate to a valid certificate before you can export. This task is relatively easy. First you must create a new certificate. Command below is an example.</p>
+
+<p><img src="/assets/images/movingdbimage1.png" alt="image1" /></p>
+
+<p>Once the certificate is created, if this is a stand alone SQL Server, then all we need to do is rotate the certificate in. We can do this with an alter database command as shown below:</p>
+
+<p><img src="/assets/images/movingdbimage2.png" alt="image2" /></p>
+
+<p>Finally, we can validate our database is leveraging the correct certificate with the following command.</p>
+
+<p><img src="/assets/images/movingdbimage3.png" alt="image3" /></p>
+
+<p>What if we were leveraging Always On Availability Groups and our database was participating? Do we need to suspend data movement? Do we need to un-encrypt the database? Luckily, the answer is no. All we need to do is create the certificate on the primary, export the certificate, and then create the certificate on each secondary. An example of creating the certificate from a file is listed below:</p>
+
+<p><img src="/assets/images/movingdbimage4.png" alt="image4" /></p>
+
+<p>After the certificate has been created on all nodes, the alter command can be run from the primary followed by the validation query on each server. If by chance the alter command is run before the certificate has been created on each secondary, all is not lost. You will, however, need to resume data movement once the certificate has been created.</p>
+
+<p>Now we have a TDE database which has a valid cert and we can begin the process of exporting it and migrating it to Azure SQL Managed Instance. Before we can move forward with the script to do this, we will want to validate that we have a few tools installed on our machine. Two PowerShell cmdlets are required, Az.keyvault and Az.Sql.</p>
+
+<p><img src="/assets/images/movingdbimage5.png" alt="image5" /></p>
+
+<p>As you can see above the script will throw an error if they don’t exist, however, the command to install them is also provided. Installing them will require you run PowerShell as an admin. The next tool required is pvk2pfx.exe. This command line tool is provided as part of the Windows 10 SDK. It maybe confusing on how to install this, therefore, I am providing additional information. First, it requires you have Visual Studio installed. If you don’t currently have it installed, then you will wan to go download it first. You can download here. Once Visual Studio is installed, you will want to launch Visual Studio Installer.</p>
+
+<p><img src="/assets/images/movingdbimage6.png" alt="image6" /></p>
+
+<p>Once you are in the installer, you will click Modify next to the Visual Studio you have installed.</p>
+
+<p><img src="/assets/images/movingdbimage7.png" alt="image7" /></p>
+
+<p>Once it has launched, you will want to select Individual components and the enable the check box next to Windows 10 SDK as depicted below:</p>
+
+<p><img src="/assets/images/movingdbimage8.png" alt="image8" /></p>
+
+<p>Once this has been completed, you have all the tools required to run the script to export and upload the certificate.</p>
+
+<p>Let’s take a closer look at the PowerShell script we will leverage for this. First section of the script are variables we will want to set for our environment followed but some system generated variables based our environment. Each are described below.</p>
+
+<p><img src="/assets/images/movingdbimage9.png" alt="image9" /></p>
+
+<p>$certPath : location where we will export our certificate too.
+$certName : Name which will be used for the certificate
+$miResourceGroup : Resource Group your managed instance lives in
+$miConnection : Name of your Managed Instance
+$certPasswordSecret : Secret Name for your sa password which is stored in KeyVault
+$keyVaultName : KeyVault name where secrets are stored
+$certCerPath : Full path to exported certificate with .cer extension
+$certPvkPath : Full path to exported certificate with .pvk extension
+$certPfxPath : Full path to exported certificate with .pfx extension</p>
+
+<p>Notice here we are leveraging KeyVault to store our passwords so we ensure we are not checking in code with passwords into source control. Immediately following the variables is the call to the exe pvk2pfx. This tool will convert the files which we exported as part of setting up TDE to a pfx file, managed instance requires this format. The final step of the script converts the certificate to a base 64 encoded certificate and uploads it to managed instance. We now have our certificate successfully loaded into managed instance. How do we leverage it?</p>
+
+<p>Essentially from here we can restore any database which is utilizing this certificate for TDE onto managed instance with a normal restore command. Since the certificate exists within SQL Server it can decrypt the backup file and restore the database. When doing the restore MI will leverage the key which it has assigned for TDE for encryption. Therefore, you can be leveraging either BYOK or system managed key and MI will restore the database and leverage this certificate. MI allows for multiple certificates to be uploaded which ensures you can restore TDE databases from different servers or even the same server when it is leveraging a different certificate.</p>
+
+<p>Finally, I mentioned earlier I would provide a way to automate the restore of the database(s) with PowerShell. Luckily this is relatively easy thanks to the community driven cmdlets at http://dbatools.io. This script will also require the use of some additional tools.</p>
+
+<p><img src="/assets/images/movingdbimage10.png" alt="image10" /></p>
+
+<p>First couple requirements are PowerShell modules. As before, the script will validate they are installed and if not throw an error. The last tool required is AZCopy. AZCopy is leveraged to copy the backup files to Azure storage. There are several versions of the tool for this script I leveraged version 8.1. Next you will need to provide some environment details. Variables are listed below.</p>
+
+<p><img src="/assets/images/movingdbimage11.png" alt="image11" /></p>
+
+<p>Next we will loop through the databases provided and Backup each one at a time. For clarification this backup command is setup to create a backup file once a day. If it is run more than once it will overwrite the existing file for that day. You may want to customize the backup and restore portion. If you do, then you can leverage the following command to get details Get-Help Backup-Dbadatabase -full</p>
+
+<p><img src="/assets/images/movingdbimage12.png" alt="image12" /></p>
+
+<p>Following the backup, we leverage AZCopy to move the backup files to Azure storage. And finally we loop through each of the backup files and restore to Managed Instance.</p>
+
+<p><img src="/assets/images/movingdbimage13.png" alt="image13" /></p>
+
+<p>Notice we don’t need to provide any additional information for the certificate because we have already imported it to Managed Instance. We now have a script which can be scheduled to run on a regular interval to refresh one or more databases. All the scripts referenced here can be found in my GitHub location which can be found at <a href="https://github.com/aultt/ProofOfConcepts/tree/master/SQLDatabaseRefreshtoSQLMI">here</a>. Please let me know if there are questions or if anything needs further clarification.</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#azure" class="page__taxonomy-item p-category" rel="tag">Azure</a><span class="sep">, </span>
+    
+      <a href="/tags/#migration" class="page__taxonomy-item p-category" rel="tag">Migration</a><span class="sep">, </span>
+    
+      <a href="/tags/#sql" class="page__taxonomy-item p-category" rel="tag">SQL</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#blog" class="page__taxonomy-item p-category" rel="tag">blog</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2020-01-19T05:41:20-05:00">January 19, 2020</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Moving+Databases+with+TDE+to+Azure+SQL+MI%20http%3A%2F%2Flocalhost%3A4000%2Fblog%2FMoving-Databases-with-TDE%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FMoving-Databases-with-TDE%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FMoving-Databases-with-TDE%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/Enable-Auditing-AzureSQL/" class="pagination--pager" title="Enabling Auditing and Diagnostics on Azure SQL with PowerShell
+">Previous</a>
+    
+    
+      <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part1/" class="pagination--pager" title="Azure DevOps for the Data Engineer Part 1
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Oracle-Infrastructure-as-Code-in-Azure/" rel="permalink">Oracle Infrastructure as Code in Azure
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part2/" rel="permalink">Azure DevOps for the Data Engineer Part 2
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part1/" rel="permalink">Azure DevOps for the Data Engineer Part 1
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Enable-Auditing-AzureSQL/" rel="permalink">Enabling Auditing and Diagnostics on Azure SQL with PowerShell
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Azure Infrastructure as Code. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

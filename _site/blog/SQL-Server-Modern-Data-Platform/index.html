@@ -1,0 +1,677 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>SQL Server Modern Data Platform - Azure Infrastructure as Code</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Troy Ault">
+  
+  <meta property="article:author" content="Troy Ault">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure Infrastructure as Code">
+<meta property="og:title" content="SQL Server Modern Data Platform">
+<meta property="og:url" content="http://localhost:4000/blog/SQL-Server-Modern-Data-Platform/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2018-12-31T23:00:20-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/SQL-Server-Modern-Data-Platform/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Azure Infrastructure as Code Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Azure Infrastructure as Code
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/MyPortfolioimage.png" alt="Troy Ault" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Troy Ault</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Automation one day at a time!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://troyault.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">troyault.com</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/aultt" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="SQL Server Modern Data Platform">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2018-12-31T23:00:20-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/blog/SQL-Server-Modern-Data-Platform/" class="u-url" itemprop="url">SQL Server Modern Data Platform
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><img src="/assets/images/sqlmdpimage0.png" alt="image0" /></p>
+
+<p>1/1/2019</p>
+
+<p>Are you looking to modernize your data platform? Do you have need to quickly get off a version of SQL Server which is approaching end of life? Today I am going to walk through through the different options and help you determine how you will run SQL Server in the future.sql</p>
+
+<p>Before we talk about how will will run SQL Server in the future lets look back over the evolution.</p>
+
+<p><img src="/assets/images/sqlmdpimage1.png" alt="image1" /></p>
+
+<p>We can see very easily now that SQL Server release cycles are shorter and there is a lot of focus on SQL Server running in the cloud. In fact, SQL Server running in Azure is what is allowing the quicker release cycles. Customers are providing feedback during preview releases allowing for a faster and better product to be released. Knowing release cycles are shorter, we need to adapt how we are deploying so we can do so with shorter time and greater precision. We will cover how we can achieve both of these in the follow up posts on automation. Before we move off to automation, we need to understand all the different options we have available.</p>
+
+<p>When we talk about running SQL Server, we have three different deployment models we can leverage:</p>
+
+<p>PaaS – Platform as a Service
+IaaS – Infrastructure as a Service
+Physical Server Deployment
+As DBA’s, it’s an added benefit that across all three deployment models the data platform is consistent regardless if it is on-prem or in the cloud.</p>
+
+<p>Let’s talk about PaaS solutions first. Within Azure we have several PaaS Deployment offers. All PaaS offers for SQL Server fall under the Azure SQL Database umbrella. Within Azure SQL Database we currently have three options depicted below.</p>
+
+<p><img src="/assets/images/sqlmdpimage2.png" alt="image2" /></p>
+
+<p>We call this Platform as a Service. You may ask yourself what does that mean or what does that buy me? The answer is a lot! For one, you never need to migrate again or patch. How many countless hours have DBA’s over the years spent in just these two areas? But there is more than that, we have BuiltIn-HA and Business Continuity out of the box. Do you have workloads that change from week to week or month to month? We have you covered because you can resize on the fly as well. Platform as a Service provides many advantages. Below is an image depicting them.</p>
+
+<p><img src="/assets/images/sqlmdpimage3.png" alt="image3" /></p>
+
+<p>Now we understand what PaaS offers us. Next we need to understand the different purchasing models within the Azure SQL Database offering. There are two different purchasing models, vCore and DTU, of which there are different Service Tiers.</p>
+
+<p>DTU-based Purchase Model
+What is a DTU you ask?</p>
+
+<p>A [Database Transaction Unit] is a blended measure of CPU, memory, data I/O, and transaction log I/O in a ratio determined by an OLTP benchmark workload designed to be typical of real-world OLTP workloads. Doubling the DTUs by increasing the performance level of a database equates to doubling the set of resource available to that database.</p>
+
+<p>Now we know what a DTU is, let’s talk about the different Service tiers. There are three tiers: Basic, Standard, and Premium. All three tiers will provide 99.99% uptime. The differences comes with the blended ratio of resources you get. Microsoft provides a break down of the differences <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/service-tiers-dtu?view=azuresql">here</a>.</p>
+
+<p>vCore-based Purchase Model</p>
+
+<p>The vCore model allows you to independently scale, compute and storage. This model will feel very similar to how you have managed your on-prem SQL environments. In addition, with vCore you have the ability to exchange your existing SQL licenses.</p>
+
+<p>Within the vCore model, we have different generations of Hardware we can select from as well as different service tiers.</p>
+
+<p>Gen 4 – up to 24 logical CPUs on Haswell processors. vCore = 1 Physical Core 7GB of memory per core, attached SSD
+Gen 5 – up to 80 logical CPUS on Broadwell processors. vCore = 1 Hyper-thread. 5.5GB of memory per core, fast eNVM SSD</p>
+
+<p>vCore Service tiers
+General Purpose : Premium remote storage, database size 5GB – 4TB
+Business Critical: Local SSD storage, database size 5GB – 1TB
+Hyperscale (Preview): Autogrow of storage as needed. Supports up to 100TB storage and beyond. Local SSD for local buffer pool cache and local data storage.</p>
+
+<p>Full details on vCore as well as information on Azure Hybrid Benefit can be found <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/service-tiers-sql-database-vcore?view=azuresql">here</a>.</p>
+
+<p>All of the above correspond to Azure SQL DB in Single, Elastic Pool and Managed Instance with the exception of there is no DTU model for Managed Instance.</p>
+
+<p>Now we have covered all the different Deployment, Purchasing and Service Tiers available for SQL Server in Azure. How do we go about determining which flavor we want to deploy? The first thing I would check for within an application is whether it is a vendor application or home grown application? If it’s vendor, check vendor for supported SQL version and cloud db compatibility. Once you answer this, the next step is to leverage Database Migration Assistant (DMA) against each source. If you are unfamiliar with DMA, it’s a tool which helps you upgrade to modern data platform by detecting compatibility issues. Additional information and download information can be found <a href="https://learn.microsoft.com/en-us/sql/dma/dma-overview?view=sql-server-2017">here</a>. Within DMA, you can check targets of SQL 2012 -2017 and Azure SQL Db and Azure SQL Managed Instance.</p>
+
+<p>After we have run DMA and know of any compatibility issues, then we can determine our options. We can look to adapt our application to fit into the the destination we prefer or fall down the stack. When I refer to stack, I tell customers to first look at Azure SQL Database Singleton or Elastic Pool first as it has the least amount of maintenance effort required. If your application does not fit this model, then look to Azure SQL Managed Instance which is very close to on-prem SQL. And finally, if you are unable to leverage SQL Managed Instance then look to run SQL on IaaS. Even though you may need to fall to IaaS for your SQL Server implementation, this doesn’t mean you have to lose all of the benefits of PaaS. Within IaaS, you can still leverage Desired State Configuration(DSC) to ensure you have a consistent build that doesn’t drift over time. If you aren’t familiar with DSC, then look through some of my previous posts to understand what it has to offer. Now we have talked about the different options for deploying SQL Server in Azure, the last thing I want to cover are the differences in Azure SQL Managed Instance and on-prem SQL Server.</p>
+
+<p>Azure SQL Managed Instance has near 100% features of SQL Server and provides native virtual network(VNET) implementation which address common security concerns. So what features doesn’t Managed Instance have?</p>
+
+<p>Features obsolete in the cloud (or have a better alternative)
+AlwaysOn Availability: Groups HA is built in
+Windows Authentication: Azure Active Directory is the alternative
+Management Data Warehouse: Azure Monitor is the alternative
+Policy Based Management: common DBA tasks are performed by SQL Database
+Features retired
+Database Mirroring: builtin HA/geo-replication better alternatives
+Extended stored procedures: customers should use CLR
+Features considered Post-GA
+Filestream
+Filetable
+Cross-instance distributed transactions (As well as transactions which require MS DTC)
+Data Quality Services (DQS)
+Master Data Services (MDS)
+Stretch Database
+After reading this article, hopefully you are more informed about the options which exist for deploying SQL Server. The next step is automating these deployments. The most challenging automation is around the IaaS implementations so that is where I will begin and assist you in your journey. Over the next couple of Blog posts, I will cover SQL Server Single Server Deployment in Azure VM, SQL AlwaysOn Deployment, and SQL Server FailoverCluster Deployment. I will provide you with configurable Azure Resource Manager (ARM) templates to allow you to quickly and reliably deploy your infrastructure. Until then, happy automating!</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#arm" class="page__taxonomy-item p-category" rel="tag">ARM</a><span class="sep">, </span>
+    
+      <a href="/tags/#azure" class="page__taxonomy-item p-category" rel="tag">Azure</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#blog" class="page__taxonomy-item p-category" rel="tag">blog</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2018-12-31T23:00:20-05:00">December 31, 2018</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=SQL+Server+Modern+Data+Platform%20http%3A%2F%2Flocalhost%3A4000%2Fblog%2FSQL-Server-Modern-Data-Platform%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FSQL-Server-Modern-Data-Platform%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FSQL-Server-Modern-Data-Platform%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/DSC-For-SQL-FC/" class="pagination--pager" title="Desired State Configuration (DSC) for SQL Server FailoverCluster
+">Previous</a>
+    
+    
+      <a href="/blog/Automating-SQL-In-Azure-Part1/" class="pagination--pager" title="Automating SQL Server in Azure Part 1
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Oracle-Infrastructure-as-Code-in-Azure/" rel="permalink">Oracle Infrastructure as Code in Azure
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part2/" rel="permalink">Azure DevOps for the Data Engineer Part 2
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part1/" rel="permalink">Azure DevOps for the Data Engineer Part 1
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Moving-Databases-with-TDE/" rel="permalink">Moving Databases with TDE to Azure SQL MI
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Azure Infrastructure as Code. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

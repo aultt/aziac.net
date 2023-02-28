@@ -1,0 +1,690 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure DevOps for the Data Engineer Part 1 - Azure Infrastructure as Code</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Troy Ault">
+  
+  <meta property="article:author" content="Troy Ault">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure Infrastructure as Code">
+<meta property="og:title" content="Azure DevOps for the Data Engineer Part 1">
+<meta property="og:url" content="http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part1/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-08-10T00:00:20-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part1/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Azure Infrastructure as Code Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Azure Infrastructure as Code
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/MyPortfolioimage.png" alt="Troy Ault" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Troy Ault</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Automation one day at a time!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://troyault.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">troyault.com</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/aultt" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Azure DevOps for the Data Engineer Part 1">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2020-08-10T00:00:20-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/blog/Azure-DevOps-for-the-Data-Engineer-Part1/" class="u-url" itemprop="url">Azure DevOps for the Data Engineer Part 1
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><img src="/assets/images/DevOpsPart1Image0.png" alt="image0" /></p>
+
+<p>8/10/2020</p>
+
+<p>Working with customers, I often need to spin up environments to demo/test/validate different scenarios. In the past I have kept a Hyper-V lab which housed all the different versions of SQL. This became a management overhead to ensure they were up to date. In addition, the number of releases and the supported platforms continued to increase. Customers also are looking to move their data workloads to Azure and therefore are looking at ways to automate. In the past I developed ARM templates for most of the SQL Server scenarios to aid in this. Testing was painful and caused for these templates to become outdated over time. The answer is to put them into a pipeline to ensure there are not steps missed in the deployment. Unfortunately, I was unable to find documentation on how to implement an ARM template within an Azure DevOps pipeline.</p>
+
+<p>Therefore, I have worked through the process and would like to document for others and myself to reference later. My approach was to develop ARM templates which could be leveraged like Lego pieces to build out several different pipelines. The two pieces which will be used for all my SQL deployments are domain controller and workstation. For this post I will walk through the domain controller template, talk to what changes you will need to make, and show how you can build a simple DevOps pipeline to deploy it.</p>
+
+<h2 id="setup-dependencies">Setup Dependencies</h2>
+<p>Let’s get started. First thing you will want to do is to fork the <a href="https://github.com/aultt/DomainController">DomainController</a> repository. You will need to update a couple of the files before you are ready to deploy, however, first let’s walk through things you will need to have deployed in your Azure subscription before making file changes. You will want to deploy/verify each of the following, storage account, key vault, virtual network, before moving on to modifying files. Within your key vault you will want to create two Secrets, one for the domain admin password and one for the local admin password.</p>
+
+<p>Now that our prerequisites are complete let’s open the GitHub repository we downloaded and see what is included. After you have downloaded it, open the folder in Visual Studio Code. You will find the files which are shown in the picture below:</p>
+
+<p><img src="/assets/images/DevOpsPart1image1.png" alt="image1" /></p>
+
+<h2 id="dsc-configuration-changes">DSC Configuration changes</h2>
+<p>First item on the list is the DSC folder. Within the folder we will find all the DSC modules we will leverage to build out our domain controller (DC) and DSC configuration file. If you aren’t familiar with Desired State Configuration (DSC) check out my earlier posts which walk through it in more detail. For this post we will walk through how to modify files to deploy your DC but won’t walk through how DSC does the work. Within the DSC folder the only file you will want to update is the Domain.ps1 file. Within this file there are users who are created for our environment.</p>
+
+<p><img src="/assets/images/DevOpsPart1Image2.png" alt="image2" /></p>
+
+<p>Above are the five items you may want to change, three domain users and a domain group. Two of the user accounts are for our SQL Server SQLSvc and SQLAgt. If you want these to be different just place the name you would like them to use instead. Third user is the user I leveraged for development and was added to the DBA group which is the fourth and fifth item to change.</p>
+
+<h2 id="azure-resource-manager-template">Azure Resource Manager Template</h2>
+<h3 id="modify-arm-template">Modify ARM template</h3>
+<p>We now are ready to look at our ARM template and parameters file. Open up azuredeploy.json in Visual Studio Code. We have one line we need to update here, line 101 which is our artifacts location. Replace <YOUR_STORAGE_ACCOUNT_NAME> with your storage account name. Within in your storage account you will need to have a container created, in my case I created one called artifact. If you name your container differently please update it here as well.</YOUR_STORAGE_ACCOUNT_NAME></p>
+
+<h3 id="modify-arm-parameter-file">Modify ARM Parameter File</h3>
+<p>Next lets open azuredeploy.parameters.json. This file holds all our parameters which are passed to our ARM template we just modified. You should review each parameter here but at a minimum you will need to update line 17, 31, 37, 40 46 and 49. Below each is described:</p>
+
+<p>17 &amp; 31 – Provide your subscription id, the resource group name where your key vault resides and your key vault name. Additionally, if you did not create your secret names as DomainAdmin and localadminPass update these to the corresponding secret name.</p>
+
+<p>37 – Enter the resource group name where your virtual network resides.</p>
+
+<p>40 – Enter your Vnet Name</p>
+
+<p>46 – Enter your Subnet Name</p>
+
+<p>49 – Replace <YOUR_STORAGE_ACCOUNT_NAME> with your storage account name and if your container is not artifact please update to the corresponding container name. _artifactsLocationSasToken on line 51 should not be modified.</YOUR_STORAGE_ACCOUNT_NAME></p>
+
+<p>Aside from line 51, all other parameters can be modified to fit your needs. Line 51 is for SaS Token which we dynamically build and should not be modified.</p>
+
+<p>We have now modified all the files needed to call our template from a DevOps pipeline. Three additional files reside in our repository we haven’t yet discussed, DomainDeploy.ps1, azure-pipelines.yml, and azure-pipelines-release.yml.</p>
+
+<h3 id="modify-manual-deployment-script">Modify Manual Deployment Script</h3>
+<p>DomainDeploy.ps1 can be leveraged to manually deploy your ARM template. This is often how I run the first couple of times to validate the DSC configuration. If you want to leverage this, you will want to look at the first four lines. $resourceGroupName and $resourceGroupLocation is the name of the resource group where the virtual machine and corresponding resources will be created. $templateFile and $templateParm should point to where you forked your repro locally.</p>
+
+<h2 id="azure-devops-pipeline">Azure DevOps Pipeline</h2>
+<p>azure-pipelines.yml defines our Azure DevOps pipeline. We will walk through modifying this in your environment. Before modifying the file, we first need to have a DevOps project. If you don’t have an existing one create a new project. Next click Pipelines.</p>
+
+<p><img src="/assets/images/DevOpsPart1Image3.png" alt="image3" /></p>
+
+<p>Then click New Pipeline. You will be presented a screen like below:</p>
+
+<p><img src="/assets/images/DevOpsPart1Image4.png" alt="image4" /></p>
+
+<p>Your code needs to be associated with a repository to leverage DevOps, you can leverage an Azure Repos or one of the others listed above. Once you select your provider, you will be presented with your repos and will select the repo you are attaching this pipeline to.</p>
+
+<h2 id="continuous-integration-pipeline">Continuous Integration Pipeline</h2>
+<p>After selecting the repo select existing Azure Pipelines YAML File and select azure-pipelines.yml. You will be presented with the following view:</p>
+
+<p><img src="/assets/images/DevOpsPart1Image5.png" alt="image5" /></p>
+
+<p>Notice there are items which will need to be update below the red arrow. To update these, click the Settings where the error is pointing. An additional window will be displayed on the right for you to select these values as shown below:</p>
+
+<p><img src="/assets/images/DevOpsPart1Image6.png" alt="image6" /></p>
+
+<p>Select your Azure Subscription, Storage account and container name and click Add. Your CI pipeline is now ready to save and run. So, what did we just accomplish? Let’s walk through our CI pipeline. The first item in the file is trigger, notice it has a value of master, any time the master branch is updated Azure DevOps will kick off the pipeline and do the steps listed here. The remainder of the steps zip all the DSC modules and configuration script in a zip file, publish the artifacts to a container and then copy the zip file to our azure storage account so our ARM template can reference it. ARM templates which reference external files must be stored in some form of external storage today. Now that our CI pipeline is built, anytime we add a DSC module or update our DSC configuration the pipeline will zip them all and copy them to our storage account automatically.</p>
+
+<h2 id="release-pipeline">Release Pipeline</h2>
+<p>The final script is azure-pipelines-release.yml which is our release pipeline. We will leverage this any time we want to deploy our pipeline, which in this case is our domain controller. Eventually we will have a release pipeline which deploys all the servers for our environment. Let’s look at our final file. As before, create a new pipeline, select your repository, select your repo, and then select azure-pipelines-release.yml. The diagram below depicts the file and the things you will need to modify.</p>
+
+<p><img src="/assets/images/DevOpsPart1Image7.png" alt="image7" /></p>
+
+<p>First you will want to Click Settings above line 8 marked number 1. This will allow you to select the appropriate Project which will populate the project ID. Once your project is selected you can select the Build Pipeline which we created earlier, and the pipeline ID will be populated for you. Once complete click Add. **Task pulls artifacts local to build server.</p>
+
+<p>Next select Settings above line 17 marked number 4. This again will pull up another window for you to allow you to select the subscription the script will run against. After you select your subscription modify the inline script replacing the storage account name with your storage account name. Once complete click Add. **Task is a PowerShell task which will get a SASToken for our storage account, which allows DevOps to pass the token to the ARM template which is called next.</p>
+
+<p>Finally select Settings above line 28 marked number 7. Once this is pulled up select the Azure Resource Manager connection and the subscription. Once complete go to the Override template parameters and modify the VMName and Domain Name to match what you would like. Override parameters allow you to override anything which is provided in the azuredeploy.parameters.json file. Once complete click Add. **Task calls our ARM template and passes overrides and SAS token to kick off our deployment.</p>
+
+<h2 id="deploy-pipeline">Deploy Pipeline</h2>
+<p>You can now Save and Run your DevOps pipeline. Once you run it will show the Status and Duration as below.</p>
+
+<p><img src="/assets/images/DevOpsPart1Image8.png" alt="image8" /></p>
+
+<p>You have now successfully deployed a domain controller with a DevOps Pipeline. In my next Blog Post we will incorporate the workstation and SQL server with a Pipeline to put them all together.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#arm" class="page__taxonomy-item p-category" rel="tag">ARM</a><span class="sep">, </span>
+    
+      <a href="/tags/#azure" class="page__taxonomy-item p-category" rel="tag">Azure</a><span class="sep">, </span>
+    
+      <a href="/tags/#dsc" class="page__taxonomy-item p-category" rel="tag">DSC</a><span class="sep">, </span>
+    
+      <a href="/tags/#sql-server" class="page__taxonomy-item p-category" rel="tag">SQL Server</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#blog" class="page__taxonomy-item p-category" rel="tag">blog</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2020-08-10T00:00:20-04:00">August 10, 2020</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Azure+DevOps+for+the+Data+Engineer+Part+1%20http%3A%2F%2Flocalhost%3A4000%2Fblog%2FAzure-DevOps-for-the-Data-Engineer-Part1%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FAzure-DevOps-for-the-Data-Engineer-Part1%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FAzure-DevOps-for-the-Data-Engineer-Part1%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/Moving-Databases-with-TDE/" class="pagination--pager" title="Moving Databases with TDE to Azure SQL MI
+">Previous</a>
+    
+    
+      <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part2/" class="pagination--pager" title="Azure DevOps for the Data Engineer Part 2
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Oracle-Infrastructure-as-Code-in-Azure/" rel="permalink">Oracle Infrastructure as Code in Azure
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part2/" rel="permalink">Azure DevOps for the Data Engineer Part 2
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Moving-Databases-with-TDE/" rel="permalink">Moving Databases with TDE to Azure SQL MI
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Enable-Auditing-AzureSQL/" rel="permalink">Enabling Auditing and Diagnostics on Azure SQL with PowerShell
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Azure Infrastructure as Code. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,717 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Automating SQL Server in Azure Part 2 - Azure Infrastructure as Code</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Troy Ault">
+  
+  <meta property="article:author" content="Troy Ault">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Azure Infrastructure as Code">
+<meta property="og:title" content="Automating SQL Server in Azure Part 2">
+<meta property="og:url" content="http://localhost:4000/blog/Automating-SQL-In-Azure-Part2/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-01-03T05:41:20-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/Automating-SQL-In-Azure-Part2/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Azure Infrastructure as Code Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Azure Infrastructure as Code
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/MyPortfolioimage.png" alt="Troy Ault" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Troy Ault</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Automation one day at a time!</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://troyault.com" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">troyault.com</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/aultt" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Automating SQL Server in Azure Part 2">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2019-01-03T05:41:20-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/blog/Automating-SQL-In-Azure-Part2/" class="u-url" itemprop="url">Automating SQL Server in Azure Part 2
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p><img src="/assets/images/autosqlpart2image0.png" alt="image0" /></p>
+
+<p>1/3/2019</p>
+
+<p>Continuing where we left off from our last post, we are now going to look into a more complex Azure Resource Manager (ARM) template. In this post we will cover an Always On deployment to an existing VNet and domain.</p>
+
+<p>Provided you read the first post in this series, you will have a copy of my Github ARM repo local to your machine. If not, head over to Github and download or fork a copy from <a href="https://github.com/aultt/ARM">here</a>.</p>
+
+<p>Now that we have a copy to work with locally, let’s take a look at the files we have to work with. Things should look very similar to the standalone files. We have three files and a folder just as we did before:</p>
+
+<p>template.json : ARM Template which describes what will be deployed.
+paramaters.json : Parameter file passed to ARM template with variables defined for deployment
+DSC Folder : DSC configurations applied to SQL Servers at build time
+deploy.ps1 : PowerShell script to aid in deploying the template
+Again, we will start with the deploy.ps1 file.
+You will quickly see this looks just like the standalone template with the exception of the variables values. We won’t go into the specifics of the contents of this file. If you would like a detailed walk through, then please reference the first post in this series.</p>
+
+<p><img src="/assets/images/autosqlpart2image1.png" alt="image1" /></p>
+
+<p>parameters.json will look similar to the standalone template, however, we now have many additional variables which we must pass. Below is a list of the variables and their description:</p>
+
+<ul>
+  <li>location : region where machines will be deployed</li>
+  <li>namePrefix: Prefix which will be used for naming resources. Virtual machines will have a numeric number appended.</li>
+  <li>vmCount: number of vm’s to create. (Valid values: 2-8)</li>
+  <li>virtualMachineSize : Azure machine size of the VM to create.</li>
+  <li>existingVirtualNetworkRGName: Resource Group Name where VNet is created.</li>
+  <li>existingVirtualNetworkName: Name of the VNet which you are deploying to.</li>
+  <li>existingSubnet: Name of the subnet you are deploying to.</li>
+  <li>domainName: Name of your domain fully qualified. (Ex. tamz.us)</li>
+  <li>adminUsername: local administrator account for windows</li>
+  <li>adminPassword: KeVault reference to local admin password.</li>
+  <li>networkSecurityGroupName: Name of the network security group which is created.</li>
+  <li>availabilitySetName: Name of Availability Set which is created for all VMs to reside in.</li>
+  <li>ClusterStaticIP: Static IP address assigned to the cluster. There is confusion often around this as Azure has no way to assign static ip addresses. In this case you will grab an ip address within your VNet, when the load balancer is created behind the scenes Azure will reserve the IP address for you making it static.</li>
+  <li>ClusterIPSubnetClass: Subnet Class for the ClusterIp. (For a /24 provide 24 for a /16 provide 16)
+availabilityGroupName: Name of the availability group to be created.</li>
+  <li>sqlPort : Port SQL Server will be listening on</li>
+  <li>listenerStaticIP: Static IP address for AvailabilityGroup Listener.</li>
+  <li>listenerSubnetMask: Subnet Mask for availability Group</li>
+  <li>diagnosticStorageAccountName: Name of the diagnosticStorageAccount where you would like to store diagnostics</li>
+  <li>diagnosticStorageAccountId: Id of the Storage account. (This can be found by clicking properties on the storage account)</li>
+  <li>sqlAuthenticationLogin: SQL account which will be made the sa.</li>
+  <li>sqlAuthenticationPassword: KeVault reference to the sa password.</li>
+  <li>sqlSysAdmins: Windows domain group which you would like to have sysadmin role.</li>
+  <li>domainUsername: Domain user with the ability to add computers to the domain and the ability to create computer accounts, such as Cluster and Availability Group listener.</li>
+  <li>sqlUserName: User account which will be running SQL Server Service</li>
+  <li>sqlUserPassword: KeVault reference to the password for the SQL Service account</li>
+  <li>_artifactsLocation: location of artifacts. If you don’t make any changes to the DSC template this can be left to point to my Github. If you need to make changes this allows you to point it to another location.</li>
+</ul>
+
+<p>As you can see, we have have many additional parameters we need to provide for an AlwaysOn template. Keep in mind these are just the required parameters, there are many other parameters you could choose to pass if you need to deviate from one of the values I have defaulted.</p>
+
+<p>Let’s now move on and look at template.json. template.json holds the additional parameters we could pass as well as all of the different resources which will be created with our template. Take a look at the parameters block. We have virtually every item here which can be passed as a parameter. If you find something that is not parameterized feel free to submit a pull request with it, or raise an issue and we will look to add it. Take a moment to look through all the parameters and familiarize yourself with what’s available.</p>
+
+<p>Moving down the document, the next notable resource I want to cover is availabilitySets. A quick definition of an availability set is provided below:</p>
+
+<p>An Availability Set is a logical grouping capability that you can use in Azure to ensure that the VM resources you place within it are isolated from each other when they are deployed within an Azure datacenter. Azure ensures that the VMs you place within an Availability Set run across multiple physical servers, compute racks, storage units, and network switches. If a hardware or Azure software failure occurs, only a subset of your VMs are impacted, and your overall application stays up and continues to be available to your customers. Availability Sets are an essential capability when you want to build reliable cloud solutions. https://docs.microsoft.com/en-us/azure/virtual-machines/windows/tutorial-availability-sets</p>
+
+<p>Storage Account is the next resource which is defined. We provision a storage account to utilize as a Cloud Witness for our Windows Cluster.</p>
+
+<p>Virtual Machines is our next resource. I’d like to point out here an important feature within the json document. Notice the copy item, this is how we create from 2 – 8 different virtual machines depending on the vmCount which you pass. All machines are built alike and the template just creates a loop which it executes till the vmCount is reached.</p>
+
+<p><img src="/assets/images/autosqlpart2image2.png" alt="image2" /></p>
+
+<p>You will notice as you look through the virtual Machines section, the disks which are created and the size and type of disk are parameters which can be passed.</p>
+
+<p>Extensions resource follows our virtual Machines. Extensions are where are DSC Configurations are defined. Below I have highlighted the interesting points for the DSC Extension.</p>
+
+<p><img src="/assets/images/autosqlpart2image3.png" alt="image3" /></p>
+
+<p>Note again we leverage the copy loop to loop through each VM created and apply the DSC Configuration. The difference here lies in the script for the configuration. We want to apply a different script for the first Node in the cluster than the remaining nodes. Why? Because initially we have to create the Windows Cluster, and we need to Create the Availability Group. We only do this once, on all other nodes we will do a join instead of a create. We will talk more through this when we get to the DSC configuration. Just note here we call PrimarySQLNode configuration for the first node and all other nodes will get SecondSQLNode applied.</p>
+
+<p>Following our extensions we have our network Interfaces and our load balancer. If you haven’t done any Azure deployments of Always On, you may be saying load balancer – why? Below is a picture which depicts how the Internal Load balancer is being utilized. The key difference for an Availability Group in Azure Virtual Machines is that the Azure virtual machines, require a load balancer. The load balancer holds the IP addresses for the availability group listener. If you have more than one availability group, then each group requires a listener. One load balancer can support multiple listeners.</p>
+
+<p><img src="/assets/images/autosqlpart2image4.png" alt="image4" /></p>
+
+<p>We have now gone through all of the resources with the template.json file. The final thing to review are the two DSC Configurations included within the DSC folder. The two files are virtually identical with the difference being the secondary does a Join to the cluster and Availability Group as opposed to creating them. In addition, the secondary waits for Cluster and Availability Group to exist before it attempts to join and continue. Doing so allows for many items within the configuration to be completed in parallel ultimately saving build time.</p>
+
+<p>Opening up PrimarySQLNode.ps1 and walk through the file. As you walk through the file, look below as I will list out all the items which are set by the configuration:</p>
+
+<ul>
+  <li>Create a Firewall rule for the SQL Probe on the load balancer to communicate.</li>
+  <li>Create a Firewall run for the Cluster Probe on the load balancer to communicate.</li>
+  <li>Series of Disk configurations waiting for disks to be available then creating the volume and formatting the volume 64kb for SQL.</li>
+  <li>Install Failover Cluster Role on server</li>
+  <li>Install FailoverCluster tools</li>
+  <li>Install PowerShell tools for clustering.Installs Active Directory PowerShell tools</li>
+  <li>Join machine to the domain</li>
+  <li>Create windows cluster</li>
+  <li>Add Probe to the cluster resource to allow it to monitor the state of the cluster.</li>
+  <li>Set Cluster Quorum to Cloud Majority Node set.</li>
+  <li>Set PowerPlan to High Performance</li>
+  <li>Set TimeZone : EST by default</li>
+  <li>Install SQL Server</li>
+  <li>Assign PerformVolumeMaintenance Tasks to SQL Server Account</li>
+  <li>Assign Lock Pages in Memory to SQL Server Account</li>
+  <li>Set MaxDop based on number of cores allocated</li>
+  <li>Set Max Memory based on memory allocated to machine</li>
+  <li>Create Firewall rule for SQL Server</li>
+  <li>Create login for Cluster Service</li>
+  <li>Add permissions to Cluster Service to allow it to manage availability groups</li>
+  <li>Create Endpoint for AlwaysOn</li>
+  <li>Enable Always ON Feature for SQL Server</li>
+  <li>Create SQL Availability Group</li>
+  <li>Create SQL Availability Group Listener</li>
+  <li>Add Probe to SQL Cluster Resource</li>
+</ul>
+
+<p>Notice the same items are set for each instance of SQL Server. Here the differences are all of the additional configuration required for clustering. I’ll note here, the other file stored within the DSC directory is Cluster.ps1.zip. Within the zip file are all the different DSC resources which are required to deploy the configuration. I’ll note here as well, StorageDsc and xFailoverCluster both have modifications from what is available in GitHub today. The changes were required for the resources to work within Azure.</p>
+
+<p>We have now walked through all of the resources required to deploy an AlwaysOn Cluster in Azure. As before, I’ll note in my testing that I have tested a two node cluster and an eight node cluster. Two nodes took a total of 30 minutes to complete while the eight node cluster took 40 min in total. All and all thats pretty darn quick to build out a cluster. As always feel free to comment here or on my GitHub. Happy Automating!</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#arm" class="page__taxonomy-item p-category" rel="tag">ARM</a><span class="sep">, </span>
+    
+      <a href="/tags/#azure" class="page__taxonomy-item p-category" rel="tag">Azure</a><span class="sep">, </span>
+    
+      <a href="/tags/#dsc" class="page__taxonomy-item p-category" rel="tag">DSC</a><span class="sep">, </span>
+    
+      <a href="/tags/#sql-server" class="page__taxonomy-item p-category" rel="tag">SQL Server</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#blog" class="page__taxonomy-item p-category" rel="tag">blog</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2019-01-03T05:41:20-05:00">January 3, 2019</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Automating+SQL+Server+in+Azure+Part+2%20http%3A%2F%2Flocalhost%3A4000%2Fblog%2FAutomating-SQL-In-Azure-Part2%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FAutomating-SQL-In-Azure-Part2%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fblog%2FAutomating-SQL-In-Azure-Part2%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/Automating-SQL-In-Azure-Part1/" class="pagination--pager" title="Automating SQL Server in Azure Part 1
+">Previous</a>
+    
+    
+      <a href="/blog/Automating-SQL-In-Azure-Part3/" class="pagination--pager" title="Automating SQL Server in Azure Part 3
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Oracle-Infrastructure-as-Code-in-Azure/" rel="permalink">Oracle Infrastructure as Code in Azure
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part2/" rel="permalink">Azure DevOps for the Data Engineer Part 2
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Azure-DevOps-for-the-Data-Engineer-Part1/" rel="permalink">Azure DevOps for the Data Engineer Part 1
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/Moving-Databases-with-TDE/" rel="permalink">Moving Databases with TDE to Azure SQL MI
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Azure Infrastructure as Code. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>
